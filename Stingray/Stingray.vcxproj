@@ -153,14 +153,14 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\Window.cpp" />
-    <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="src\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
     <ClInclude Include="include\Ray.h" />
     <ClInclude Include="include\Window.h" />
-    <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="include\ThreadPool.h" />
+    <ClInclude Include="include\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
