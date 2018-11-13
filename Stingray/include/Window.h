@@ -12,7 +12,7 @@
 // program
 #include "Logger.h"
 
-namespace Stingray
+namespace Batoidea
 {
 	/*! @class Window
 	*	@brief An abstraction of the SDL Window class
@@ -40,11 +40,11 @@ namespace Stingray
 		*/
 		~Window();
 
-		/** @brief Window Buffer Swap
+		/** @brief Window Surface Render
 		*
-		*	This method simply swaps the window buffer. Should be called per frame.
+		*	Renders the surface to the screen
 		*/
-		void swapBuffer();
+		void render();
 
 		/** @brief Sets a new window size
 		*	@param _width The new width of the window
@@ -61,6 +61,12 @@ namespace Stingray
 		*/
 		void setTitle(const std::string &_title);
 
+		/** @brief Get window surface
+		*	@return The SDL surface for the window
+		*
+		*	Returns the window width.
+		*/
+		inline SDL_Surface * getSurface() { return SDL_GetWindowSurface(m_window); }
 
 		/** @brief Get the window width
 		*	@return An integar containing the window width
@@ -78,6 +84,7 @@ namespace Stingray
 	protected:
 		SDL_Window		*m_window;				/**< A pointer to the SDL_Window. */
 		SDL_Renderer	*m_renderer;			/**< A pointer to the SDL_Renderer. */
+
 
 		int				 m_width;				/**< The Window Width */
 		int				 m_height;				/**< The Window Width */

@@ -8,13 +8,20 @@
 // program
 #include "Logger.h"
 #include "Window.h"
+#include "Sphere.h"
+#include "RayTracer.h"
 
 #undef main
+
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+
+// bat oi de a
 
 
 int main()
 {
-	using namespace Stingray;
+	using namespace Batoidea;
 
 	LOG_MESSAGE("Initialising SDL");
 	// attempt to initialise opengl
@@ -26,7 +33,14 @@ int main()
 
 	LOG_MESSAGE("SDL Initialised");
 
-	std::unique_ptr<Window> window = std::make_unique<Window>("Stingray Ray Tracer", 800,  600);
+	std::unique_ptr<Window> window = std::make_unique<Window>("Batoidea Raytracer", SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	RayTracerSettings rtSettings;
+	RayTracer raytracer(rtSettings);
+
+	std::vector<Sphere> renderables;
+
+	SDL_memset(window->getSurface()->pixels, 255, window->getSurface()->h * window->getSurface()->pitch);
 
 	bool isRunning = true;
 	while (isRunning)
@@ -38,7 +52,18 @@ int main()
 			{
 				isRunning = false;
 			}
+
+			if (incomingEvent.type == SDL_KEYDOWN)
+			{
+				switch (incomingEvent.key.keysym.sym)
+				{
+				case SDLK_RETURN:
+					raytracer.trace(renderables, *window->getSurface());
+				}
+			}
 		}
+
+		window->render();
 	}
 
 	return 0;

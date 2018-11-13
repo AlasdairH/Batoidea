@@ -1,6 +1,6 @@
 #include "Window.h"
 
-namespace Stingray
+namespace Batoidea
 {
 	Window::Window(const std::string _title, const int _width, const int _height)
 	{
@@ -20,9 +20,9 @@ namespace Stingray
 		SDL_DestroyWindow(m_window);
 	}
 
-	void Window::swapBuffer()
+	void Window::render()
 	{
-
+		SDL_UpdateWindowSurface(m_window);
 	}
 
 	void Window::resize(int _width, int _height)
