@@ -15,6 +15,8 @@ namespace Batoidea
 		int resolution_width = 800;
 		int resolution_height = 600;
 
+		int threads = 1;
+
 		float fov = 30.0f;
 
 		int maxRayDepth = 5;

@@ -19,6 +19,7 @@ namespace Batoidea
 
 		LOG_MESSAGE("Beginning Raytrace");
 
+		// ray tracing the entire scene
 		for (int y = 0; y < m_settings.resolution_height; ++y)
 		{
 			for (int x = 0; x < m_settings.resolution_width; ++x)
@@ -27,13 +28,18 @@ namespace Batoidea
 				float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
 				glm::vec3 raydir(xx, yy, -1);
 				raydir = glm::normalize(raydir);
-				//*pixel = trace(Ray(glm::vec3(0), raydir), _renderables, 0);
+				// do dat trace
+				glm::vec3 pixel = trace(Ray(glm::vec3(0), raydir), _renderables, 0);
+				image[x + m_settings.resolution_width * y] = pixel;
+				
+				setPixelColour(_surface, x, y, pixel.x, pixel.g, pixel.z);
 			}
 		}
 
-		SDL_memset(_surface.pixels, 0, (_surface.h / 2) * _surface.pitch);
-
 		SDL_UnlockSurface(&_surface);
+		
+		LOG_MESSAGE("Raytrace Finished");
+		
 		return _surface;
 	}
 
@@ -114,5 +120,15 @@ namespace Batoidea
 		}
 
 		return surfaceColor + sphere->emissionColour;
+	}
+
+	void RayTracer::setPixelColour(SDL_Surface &_surface, const int _x, const int _y, const int _r, const int _g, const int _b)
+	{
+		SDL_LockSurface(&_surface);
+
+		Uint32 *pixels = (Uint32*)_surface.pixels;
+		pixels[_x + m_settings.resolution_width * _y] = (_r << 16) | (_g << 8) | _b;
+
+		SDL_UnlockSurface(&_surface);
 	}
 }

@@ -31,6 +31,8 @@ namespace Batoidea
 			return b * mix + a * (1 - mix);
 		}
 
+		void setPixelColour(SDL_Surface &_surface, const int _x, const int _y, const int _r, const int _g, const int _b);
+
 		RayTracerSettings m_settings;
 	};
 }

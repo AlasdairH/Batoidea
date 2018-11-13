@@ -68,6 +68,7 @@ int main()
 	std::vector<std::future<glm::vec3>> futureVector;
 	std::vector<glm::vec3> vector;
 
+	/*
 	Timer time;
 	for (int i = 1; i < 10; ++i)
 	{
@@ -78,13 +79,15 @@ int main()
 			})
 		);
 	}
+	*/
 
 	RayTracerSettings rtSettings;
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
+	renderables.push_back(Sphere());
 
-	SDL_memset(window->getSurface()->pixels, 200, window->getSurface()->h * window->getSurface()->pitch);
+	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
 	bool isRunning = true;
 	while (isRunning)
@@ -103,14 +106,15 @@ int main()
 				switch (incomingEvent.key.keysym.sym)
 				{
 				case SDLK_RETURN:
-					//raytracer.trace(renderables, *window->getSurface());
-					std::cout << "Enter" << std::endl;
+					LOG_MESSAGE("ENTER");
+					raytracer.render(renderables, *window->getSurface());
 					break;
 				}
 			}
 		}
 		// END INPUT
 
+		/*
 		std::vector<int> toRemove;
 
 		for (unsigned int i = 0; i < futureVector.size(); ++i)
@@ -136,6 +140,7 @@ int main()
 		{
 			futureVector.erase(futureVector.begin(), futureVector.begin() + i);
 		}
+		*/
 
 		window->render();
 	}

@@ -10,6 +10,8 @@
 // program
 #include "Renderable.h"
 
+// TODO: New sphere class
+
 namespace Batoidea
 {
 	class Sphere
