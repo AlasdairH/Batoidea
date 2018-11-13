@@ -36,6 +36,7 @@ namespace Batoidea
 		SDL_UnlockSurface(&_surface);
 		return _surface;
 	}
+
 	glm::vec3 RayTracer::trace(const Ray _ray, const std::vector<Sphere>& spheres, const int & depth)
 	{
 		//if (_ray.direction.length() != 1) std::cerr << "Error " << _ray.direction << std::endl;

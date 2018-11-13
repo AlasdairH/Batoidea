@@ -43,6 +43,29 @@ namespace Threads
 			return wrapper->get_future();
 		}
 
+		// check if a future is ready
+		template<typename T>
+		bool isReady(std::future<T> const &_future)
+		{
+			if (_future.valid())
+			{
+				auto status = _future.wait_for(std::chrono::milliseconds(1));
+				if (status == std::future_status::ready) 
+				{
+					return true;
+				}
+				else 
+				{
+					return false;
+				}
+			}
+			else
+			{
+				LOG_ERROR("Unable to check if future is ready as it is invalid");
+				return false;
+			}
+		}
+
 	protected:
 		void start(const int _numThreads);
 		void stop();

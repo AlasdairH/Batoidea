@@ -12,7 +12,7 @@
 
 // TODO: Doxygen
 
-namespace Stingray
+namespace Batoidea
 {
 	class Timer
 	{
