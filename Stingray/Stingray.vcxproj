@@ -156,6 +156,7 @@
     <ClCompile Include="src\Renderable.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Logger.h" />
@@ -165,6 +166,8 @@
     <ClInclude Include="include\Renderable.h" />
     <ClInclude Include="include\Sphere.h" />
     <ClInclude Include="include\Window.h" />
+    <ClInclude Include="include\ThreadPool.h" />
+    <ClInclude Include="include\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
