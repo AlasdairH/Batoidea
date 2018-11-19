@@ -17,9 +17,6 @@
 
 #undef main
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
-
 // bat oi de a
 
 glm::vec3 bounce(int _iterations)
@@ -85,7 +82,7 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere());
+	renderables.push_back(Sphere(glm::vec3(0, 0, -3), 0.5f));
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
@@ -106,7 +103,6 @@ int main()
 				switch (incomingEvent.key.keysym.sym)
 				{
 				case SDLK_RETURN:
-					LOG_MESSAGE("ENTER");
 					raytracer.render(renderables, *window->getSurface());
 					break;
 				}

@@ -13,6 +13,7 @@
 #include "Sphere.h"
 #include "RayTracerSettings.h"
 #include "Ray.h"
+#include "Timer.h"
 
 namespace Batoidea
 {
@@ -24,7 +25,7 @@ namespace Batoidea
 		SDL_Surface render(std::vector<Sphere> &_renderables, SDL_Surface &_surface);
 
 	protected:
-		glm::vec3 trace(const Ray _ray, const std::vector<Sphere> &spheres, const int &depth);
+		glm::vec3 trace(const Ray &_ray, std::vector<Sphere> &_objects);
 
 		float mix(const float &a, const float &b, const float &mix)
 		{

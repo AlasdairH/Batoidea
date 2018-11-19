@@ -8,9 +8,8 @@
 #include "GLM/geometric.hpp"
 
 // program
-#include "Renderable.h"
-
-// TODO: New sphere class
+#include "Logger.h"
+#include "Ray.h"
 
 namespace Batoidea
 {
@@ -19,40 +18,18 @@ namespace Batoidea
 	public:
 		glm::vec3 centre;
 		float radius;
-		float radiusSq;
-		glm::vec3 surfaceColour;
-		glm::vec3 emissionColour;
-		float transparency;
-		float reflection;
 
-		Sphere(
-			const glm::vec3 &c,
-			const float &r,
-			const glm::vec3 &sc,
-			const glm::vec3 &ec,
-			const float &refl = 0,
-			const float &transp = 0) :
-			centre(c), radius(r), radiusSq(r * r), surfaceColour(sc), emissionColour(ec),
-			transparency(transp), reflection(refl)
+		Sphere(const glm::vec3 &_centre, const float &_radius)
 		{
-
+			centre = _centre;
+			radius = _radius;
 		}
 
-		bool intersect(const glm::vec3 &rayorig, const glm::vec3 &raydir, float &t0, float &t1) const
-		{
-			glm::vec3 l = centre - rayorig;
-			float tca = glm::dot(l, raydir);
-			if (tca < 0) return false;
-			float d2 = glm::dot(l, l) - tca * tca;
-			if (d2 > radiusSq) return false;
-			float thc = sqrt(radiusSq - d2);
-			t0 = tca - thc;
-			t1 = tca + thc;
-
-			return true;
-		}
+		float intersect(const Ray &_ray);
 
 	protected:
+		glm::vec3 m_centre;
+		float m_radius;
 		
 	};
 }

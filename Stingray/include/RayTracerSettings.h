@@ -12,8 +12,8 @@ namespace Batoidea
 {
 	struct RayTracerSettings
 	{
-		int resolution_width = 800;
-		int resolution_height = 600;
+		int resolution_width = SCREEN_WIDTH;
+		int resolution_height = SCREEN_HEIGHT;
 
 		int threads = 1;
 
