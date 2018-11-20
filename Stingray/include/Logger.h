@@ -10,5 +10,5 @@
 #define LOG_ERROR(_text) std::cout << "ERROR: " << _text << std::endl
 #endif
 
-#define SCREEN_WIDTH 200
-#define SCREEN_HEIGHT 100
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
