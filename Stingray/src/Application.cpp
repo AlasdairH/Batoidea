@@ -68,7 +68,9 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere(glm::vec3(0, 0, 5), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(0, 0, 4.0f), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(2, 0, 4.0f), 0.4f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(-2, 0, 4.0f), 0.4f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 

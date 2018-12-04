@@ -11,8 +11,8 @@ namespace Batoidea
 	{
 		SDL_LockSurface(&_surface);
 
-		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 1, -5));
-		Light light(glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 0));
+		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
+		Light light;
 
 		//glm::vec3 *image = new glm::vec3[m_settings.renderResolutionWidth * m_settings.renderResolutionHeight];
 		

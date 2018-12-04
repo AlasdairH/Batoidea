@@ -25,15 +25,10 @@ namespace Batoidea
 			m_colour = _colour;
 		}
 
-		inline glm::vec4 getColour() { return m_colour; }
-
-		Intersect intersect(const Ray &_ray);
+		Intersect intersect(const Ray &_ray) override;
 
 	protected:
 		glm::vec3 m_centre;
 		float m_radius;
-
-		glm::vec4 m_colour;
-		
 	};
 }

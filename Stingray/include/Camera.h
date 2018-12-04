@@ -32,6 +32,10 @@ namespace Batoidea
 		glm::vec3 m_lookAt;
 		glm::vec3 m_viewDirection;
 
+		float m_fieldOfView; // radians
+		float m_halfFieldOfView; // precompute of the FOV division
+		float m_aspectRatio;
+
 		glm::vec3 m_U;
 		glm::vec3 m_V;
 

@@ -17,20 +17,27 @@ namespace Batoidea
 		m_U = glm::normalize(m_U);
 		m_V = glm::normalize(m_V);
 
-		float fieldOfView = 90.0f;
-
-		float viewPlaneHalfWidth = tan(fieldOfView / 2.0f);
-		float aspectRatio = m_viewportResolutionHeight / (float)m_viewportResolutionWidth;
-		float viewPlaneHalfHeight = aspectRatio * viewPlaneHalfWidth;
-
-		m_viewPlaneBottomLeftPoint = m_lookAt - m_V * viewPlaneHalfHeight - m_U * viewPlaneHalfWidth;
-		m_xIncVector = (m_U * 2.0f * viewPlaneHalfWidth) / (float)m_viewportResolutionWidth;
-		m_yIncVector = (m_V * 2.0f * viewPlaneHalfHeight) / (float)m_viewportResolutionHeight;
+		m_fieldOfView = glm::radians(70.0f);
+		m_aspectRatio = (float)m_viewportResolutionWidth / (float)m_viewportResolutionHeight;
+		m_halfFieldOfView = m_fieldOfView / 2.0f;
 	}
 
 	Ray Camera::getRay(const int _x, const int _y)
 	{
-		glm::vec3 viewPlanePoint = m_viewPlaneBottomLeftPoint + (float)_x * m_xIncVector + (float)_y * m_yIncVector;
-		return Ray(m_position, viewPlanePoint - m_position);
+		// normalised device coords, add 0.5 to ensure ray passes through the middle of a pixel
+		float pixelNDCX = (_x + 0.5f) / m_viewportResolutionWidth;
+		float pixelNDCY = (_y + 0.5f) / m_viewportResolutionHeight;
+
+		// correct pixels from [0:1] to [-1:1]
+		float pixelNormalisedX = (2 * pixelNDCX - 1);
+		float pixelNormalisedY = 1 - 2 * pixelNDCY;
+
+		// accounting for field of view
+		float pixelCameraX = pixelNormalisedX * tan(m_halfFieldOfView) * m_aspectRatio; // correct for aspect ratio
+		float pixelCameraY = pixelNormalisedY * tan(m_halfFieldOfView);
+
+		glm::vec3 pixCameraSpace = glm::vec3(pixelCameraX, pixelCameraY, 1);
+		
+		return Ray(m_position, glm::normalize(pixCameraSpace - m_position));
 	}
 }
