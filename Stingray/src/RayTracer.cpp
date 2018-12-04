@@ -9,6 +9,10 @@ namespace Batoidea
 
 	SDL_Surface RayTracer::render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
+		// transfer objects and lights to raytracer for ease of multi-threaded access
+		m_objects = _renderables;
+		m_lights = _lights;
+
 		SDL_LockSurface(&_surface);
 
 		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
@@ -23,7 +27,7 @@ namespace Batoidea
 			{
 				Ray cameraRay = camera.getRay(x, y);
 				//LOG_MESSAGE("(" << x << ", " << y << ") - (" << cameraRay.direction.x << ", " << cameraRay.direction.y << ")");
-				glm::vec3 pixel = trace(cameraRay, _renderables, _lights);
+				glm::vec3 pixel = trace(cameraRay);
 				
 				setPixelColour(_surface, x, y, pixel.r * 255, pixel.g * 255, pixel.b * 255);
 			}
@@ -37,28 +41,28 @@ namespace Batoidea
 		return _surface;
 	}
 
-	glm::vec3 RayTracer::trace(const Ray &_ray, std::vector<Sphere> &_objects, std::vector<Light> &_lights)
+	glm::vec3 RayTracer::trace(const Ray &_ray)
 	{
 
 		float closestIntersect = INFINITY;
 		std::shared_ptr<Sphere> closestRenderable;
 
 		
-		for (int i = 0; i < _objects.size(); ++i)
+		for (int i = 0; i < m_objects.size(); ++i)
 		{
-			Intersect intersect = _objects[i].intersect(_ray);
+			Intersect intersect = m_objects[i].intersect(_ray);
 			if (intersect.t1 != INFINITY)
 			{
 				if (intersect.t1 < closestIntersect)
 				{
 					closestIntersect = intersect.t1;
-					closestRenderable = std::make_shared<Sphere>(_objects[i]);
+					closestRenderable = std::make_shared<Sphere>(m_objects[i]);
 				}
 			}
 		}
 
 		// the background colour
-		glm::vec3 colour = glm::vec3(0.1f, 0.1f, 0.1f);
+		glm::vec3 colour = m_settings.backgroundColour;
 
 		if (closestRenderable != nullptr)
 		{
@@ -68,7 +72,7 @@ namespace Batoidea
 			//LOG_MESSAGE(intersect.t1 << ", " << intersect.t2);
 			// if there is an intersect
 			colour = closestRenderable->getColour();
-			colour *= computeLighting(_lights, normal, position);
+			colour *= computeLighting(normal, position);
 
 			// clamp to [0.0:1.0]
 			glm::clamp(colour, 0.01f, 0.99f);
@@ -77,28 +81,28 @@ namespace Batoidea
 		return colour;
 	}
 
-	float RayTracer::computeLighting(std::vector<Light> &_lights, glm::vec3 _normal, glm::vec3 _position)
+	float RayTracer::computeLighting(glm::vec3 _normal, glm::vec3 _position)
 	{
 		// the running intensity, will be added to by each light that affects this point
 		float intensity = 0;
 		float lengthNormal = glm::length(_normal);
 		glm::vec3 L;
 
-		for (unsigned int i = 0; i < _lights.size(); ++i)
+		for (unsigned int i = 0; i < m_lights.size(); ++i)
 		{
-			if (_lights[i].type == LIGHT_POINT)
+			if (m_lights[i].type == LIGHT_POINT)
 			{
-				L = _lights[i].position - _position;
+				L = m_lights[i].position - _position;
 			}
-			else if (_lights[i].type == LIGHT_DIRECTIONAL)
+			else if (m_lights[i].type == LIGHT_DIRECTIONAL)
 			{
-				L = _lights[i].direction;
+				L = m_lights[i].direction;
 			}
 
 			float n_dot_l = glm::dot(_normal, L);
 			if (n_dot_l > 0)
 			{
-				intensity += _lights[i].intensity * n_dot_l / (lengthNormal * glm::length(L));
+				intensity += m_lights[i].intensity * n_dot_l / (lengthNormal * glm::length(L));
 			}
 		}
 		return intensity;

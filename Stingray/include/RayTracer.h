@@ -49,22 +49,19 @@ namespace Batoidea
 	protected:
 		/** @brief Per pixel trace method
 		*	@param _ray The ray to trace through the scene
-		*	@param _objects The list of objects that can be rendered
-		*	@param _lights The lights to send to the light compute method
 		*	@return The colour (normalised) at the ray end
 		*
 		*	The per pixel render method which traces a ray through the scene.
 		*/
-		glm::vec3 trace(const Ray &_ray, std::vector<Sphere> &_objects, std::vector<Light> &_lights);
+		glm::vec3 trace(const Ray &_ray);
 		/** @brief Lighting Calculation 
 		*	@param _normal The normal of the point to calculate lighting on
-		*	@param _lights The lights to compute with
 		*	@param _position The position in space of which to calculate the lighting of
 		*	@return The light intensity at the position
 		*
 		*	Computes the lighting for a given position and normal
 		*/
-		float computeLighting(std::vector<Light> &_lights, glm::vec3 _normal, glm::vec3 _position);
+		float computeLighting(glm::vec3 _normal, glm::vec3 _position);
 
 		/** @brief Sets a surface pixel colour
 		*	@param _surface The number of worker threads to create
@@ -78,13 +75,9 @@ namespace Batoidea
 		*/
 		void setPixelColour(SDL_Surface &_surface, const int _x, const int _y, const int _r, const int _g, const int _b);
 
-		RayTracerSettings m_settings;	/**< The ray tracer settings */
+		RayTracerSettings		m_settings;		/**< The ray tracer settings */
 
-		//std::vector<Sphere
-
-		float mix(const float &a, const float &b, const float &mix)
-		{
-			return b * mix + a * (1 - mix);
-		}
+		std::vector<Sphere>		m_objects;		/**< Vector of spheres in the scene */
+		std::vector<Light>		m_lights;		/**< Vector of lights in the scene */
 	};
 }

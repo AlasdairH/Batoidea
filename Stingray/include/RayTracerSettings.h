@@ -22,6 +22,7 @@ namespace Batoidea
 		int maxRayDepth = 5;
 
 		float ambientLight = 0.05f;
+		glm::vec3 backgroundColour = glm::vec3(0.1f, 0.1f, 0.1f);
 
 		glm::vec3 cameraPosition;
 	};
