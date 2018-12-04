@@ -20,10 +20,6 @@ namespace Batoidea
 
 		Ray getRay(const int _x, const int _y);
 
-		inline glm::vec3 getPosition() { return m_position; }
-		inline glm::vec3 getDirection() { return m_direction; }
-		inline glm::vec3 getUp() { return m_up; }
-
 	protected:
 		int m_viewportResolutionWidth;
 		int m_viewportResolutionHeight;
@@ -33,8 +29,14 @@ namespace Batoidea
 		glm::mat4 m_viewMatrix;
 
 		glm::vec3 m_position;
-		glm::vec3 m_direction;
-		glm::vec3 m_right;
-		glm::vec3 m_up;
+		glm::vec3 m_lookAt;
+		glm::vec3 m_viewDirection;
+
+		glm::vec3 m_U;
+		glm::vec3 m_V;
+
+		glm::vec3 m_viewPlaneBottomLeftPoint;
+		glm::vec3 m_xIncVector;
+		glm::vec3 m_yIncVector;
 	};
 }
