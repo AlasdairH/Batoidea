@@ -68,13 +68,17 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere(glm::vec3(-2, 0, 2.0f), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(0, 0, 3.0f), 1.0f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(2, 0, 4.0f), 1.0f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(-2, 0, 5.0f), 0.5f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(0, 0, 6.0f), 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(2, 0, 7.0f), 0.5f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
 
 	std::vector<Light> lights;
-	lights.push_back(Light(glm::vec3(0, 2, 4), 1.0f));
-	//lights.push_back(Light(glm::vec3(0, 0, 1), 1.0f));
+	Light light;
+	light.type = LIGHT_DIRECTIONAL;
+	light.direction = glm::vec3(0.5f, 1, 0);
+
+	lights.push_back(light);
+
 
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);

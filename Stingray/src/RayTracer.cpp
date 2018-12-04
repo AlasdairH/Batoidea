@@ -82,15 +82,23 @@ namespace Batoidea
 		// the running intensity, will be added to by each light that affects this point
 		float intensity = 0;
 		float lengthNormal = glm::length(_normal);
+		glm::vec3 L;
 
 		for (unsigned int i = 0; i < _lights.size(); ++i)
 		{
-			glm::vec3 distance = _lights[i].position - _position;
+			if (_lights[i].type == LIGHT_POINT)
+			{
+				L = _lights[i].position - _position;
+			}
+			else if (_lights[i].type == LIGHT_DIRECTIONAL)
+			{
+				L = _lights[i].direction;
+			}
 
-			float n_dot_l = glm::dot(_normal, distance);
+			float n_dot_l = glm::dot(_normal, L);
 			if (n_dot_l > 0)
 			{
-				intensity += _lights[i].intensity * n_dot_l / (lengthNormal * glm::length(distance));
+				intensity += _lights[i].intensity * n_dot_l / (lengthNormal * glm::length(L));
 			}
 		}
 		return intensity;
