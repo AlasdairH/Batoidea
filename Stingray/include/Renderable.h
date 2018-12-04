@@ -15,7 +15,7 @@ namespace Batoidea
 	public:
 		Renderable() { }
 
-		virtual Intersect intersect(const Ray &_ray) { };
+		virtual Intersect intersect(const Ray &_ray) = 0;
 
 		inline glm::vec4 getColour() { return m_colour; }
 	protected:

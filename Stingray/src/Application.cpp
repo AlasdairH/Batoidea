@@ -68,9 +68,14 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere(glm::vec3(0, 0, 4.0f), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(2, 0, 4.0f), 0.4f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(-2, 0, 4.0f), 0.4f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(-2, 0, 2.0f), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(0, 0, 3.0f), 1.0f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
+	renderables.push_back(Sphere(glm::vec3(2, 0, 4.0f), 1.0f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
+
+	std::vector<Light> lights;
+	lights.push_back(Light(glm::vec3(0, 2, 4), 1.0f));
+	//lights.push_back(Light(glm::vec3(0, 0, 1), 1.0f));
+
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
@@ -91,7 +96,7 @@ int main()
 				switch (incomingEvent.key.keysym.sym)
 				{
 				case SDLK_RETURN:
-					raytracer.render(renderables, *window->getSurface());
+					raytracer.render(renderables, lights, *window->getSurface());
 					break;
 				}
 			}
