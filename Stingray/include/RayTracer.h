@@ -14,6 +14,8 @@
 #include "RayTracerSettings.h"
 #include "Ray.h"
 #include "Timer.h"
+#include "Camera.h"
+#include "Light.h"
 
 namespace Batoidea
 {

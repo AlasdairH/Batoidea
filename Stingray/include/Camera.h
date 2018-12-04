@@ -16,9 +16,13 @@ namespace Batoidea
 	class Camera
 	{
 	public:
-		Camera(const int _viewportResolutionWidth, const int _viewportResolutionHeight);
+		Camera(const int _viewportResolutionWidth, const int _viewportResolutionHeight, glm::vec3 _position);
 
 		Ray getRay(const int _x, const int _y);
+
+		inline glm::vec3 getPosition() { return m_position; }
+		inline glm::vec3 getDirection() { return m_direction; }
+		inline glm::vec3 getUp() { return m_up; }
 
 	protected:
 		int m_viewportResolutionWidth;
@@ -27,6 +31,10 @@ namespace Batoidea
 		glm::mat4 m_projectionMatrix;
 
 		glm::mat4 m_viewMatrix;
+
 		glm::vec3 m_position;
+		glm::vec3 m_direction;
+		glm::vec3 m_right;
+		glm::vec3 m_up;
 	};
 }

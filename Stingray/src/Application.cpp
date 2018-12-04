@@ -63,26 +63,12 @@ int main()
 
 	Threads::ThreadPool threadPool(std::thread::hardware_concurrency());
 	std::vector<std::future<glm::vec3>> futureVector;
-	std::vector<glm::vec3> vector;
-
-	/*
-	Timer time;
-	for (int i = 1; i < 10; ++i)
-	{
-		futureVector.push_back(
-			threadPool.enqueue([=]
-			{
-				return bounce(100 * i);
-			})
-		);
-	}
-	*/
 
 	RayTracerSettings rtSettings;
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere(glm::vec3(0, 0, -3), 0.5f));
+	renderables.push_back(Sphere(glm::vec3(0, 0, 0), 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
