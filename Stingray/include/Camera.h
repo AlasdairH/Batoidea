@@ -3,6 +3,7 @@
 // cstdlib
 
 // external libs
+#include "GLM/glm.hpp"
 #include "GLM/common.hpp"
 #include "GLM/geometric.hpp"
 
@@ -22,5 +23,10 @@ namespace Batoidea
 	protected:
 		int m_viewportResolutionWidth;
 		int m_viewportResolutionHeight;
+
+		glm::mat4 m_projectionMatrix;
+
+		glm::mat4 m_viewMatrix;
+		glm::vec3 m_position;
 	};
 }
