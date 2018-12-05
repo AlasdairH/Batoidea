@@ -5,16 +5,18 @@ namespace Batoidea
 	RayTracer::RayTracer(const RayTracerSettings _settings)
 	{
 		m_settings = _settings;
+
+		m_threadPool = std::make_shared<Threads::ThreadPool>(std::thread::hardware_concurrency());
+		std::vector<std::future<glm::vec3>> futureVector;
 	}
 
 	SDL_Surface RayTracer::render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
+
 		// transfer objects and lights to raytracer for ease of multi-threaded access
 		m_objects = _renderables;
 		m_lights = _lights;
 		m_pixels = (Uint32*)_surface.pixels;
-
-		
 
 		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
 		
@@ -43,6 +45,11 @@ namespace Batoidea
 		//free(image);
 
 		return _surface;
+	}
+
+	void RayTracer::renderSegmentToPixels(const glm::vec2 _start, const glm::vec2 _finish)
+	{
+
 	}
 
 	glm::vec3 RayTracer::trace(const Ray &_ray)

@@ -61,9 +61,6 @@ int main()
 	std::unique_ptr<Window> window = std::make_unique<Window>("Batoidea Raytracer", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-	Threads::ThreadPool threadPool(std::thread::hardware_concurrency());
-	std::vector<std::future<glm::vec3>> futureVector;
-
 	RayTracerSettings rtSettings;
 	RayTracer raytracer(rtSettings);
 

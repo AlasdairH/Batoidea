@@ -43,6 +43,9 @@ namespace Batoidea
 		SDL_Surface render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface);
 
 	protected:
+
+		void renderSegmentToPixels(const glm::vec2 _start, const glm::vec2 _finish);
+
 		/** @brief Per pixel trace method
 		*	@param _ray The ray to trace through the scene
 		*	@return The colour (normalised) at the ray end
@@ -59,21 +62,12 @@ namespace Batoidea
 		*/
 		float computeLighting(glm::vec3 _normal, glm::vec3 _position);
 
-		/** @brief Sets a surface pixel colour
-		*	@param _surface The number of worker threads to create
-		*	@param _x The x position on the surface
-		*	@param _y The y position on the surface
-		*	@param _r The red component
-		*	@param _g The green component
-		*	@param _b The blue component
-		*
-		*	Creates a thread pool with the specified number of threads
-		*/
+		std::shared_ptr<Threads::ThreadPool>		m_threadPool;	/**< The thread pool used to render the scene */
 
-		RayTracerSettings		m_settings;		/**< The ray tracer settings */
+		RayTracerSettings							m_settings;		/**< The ray tracer settings */
 
-		std::vector<Sphere>		m_objects;		/**< Vector of spheres in the scene */
-		std::vector<Light>		m_lights;		/**< Vector of lights in the scene */
-		Uint32					*m_pixels;		/**< Pointer to the pixels of the surface */
+		std::vector<Sphere>							m_objects;		/**< Vector of spheres in the scene */
+		std::vector<Light>							m_lights;		/**< Vector of lights in the scene */
+		Uint32										*m_pixels;		/**< Pointer to the pixels of the surface */
 	};
 }
