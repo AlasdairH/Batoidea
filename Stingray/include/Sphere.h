@@ -1,13 +1,11 @@
 #pragma once
 
 // cstdlib
-#include <algorithm>
 
 // external libs
-#include "GLM/common.hpp"
-#include "GLM/geometric.hpp"
 
 // program
+#include "PCH.h"
 #include "Logger.h"
 #include "Ray.h"
 #include "Renderable.h"

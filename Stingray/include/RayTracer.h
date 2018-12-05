@@ -1,15 +1,11 @@
 #pragma once
 
 // cstdlib
-#include <iostream>
-#include <vector>
 
 // external libs
-#include "SDL\SDL.h"
-#include "GLM/common.hpp"
-#include "GLM/glm.hpp"
 
 // program
+#include "PCH.h"
 #include "Logger.h"
 #include "Sphere.h"
 #include "RayTracerSettings.h"
@@ -73,11 +69,11 @@ namespace Batoidea
 		*
 		*	Creates a thread pool with the specified number of threads
 		*/
-		void setPixelColour(SDL_Surface &_surface, const int _x, const int _y, const int _r, const int _g, const int _b);
 
 		RayTracerSettings		m_settings;		/**< The ray tracer settings */
 
 		std::vector<Sphere>		m_objects;		/**< Vector of spheres in the scene */
 		std::vector<Light>		m_lights;		/**< Vector of lights in the scene */
+		Uint32					*m_pixels;		/**< Pointer to the pixels of the surface */
 	};
 }

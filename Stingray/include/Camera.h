@@ -3,11 +3,9 @@
 // cstdlib
 
 // external libs
-#include "GLM/glm.hpp"
-#include "GLM/common.hpp"
-#include "GLM/geometric.hpp"
 
 // program
+#include "PCH.h"
 #include "Logger.h"
 #include "Ray.h"
 

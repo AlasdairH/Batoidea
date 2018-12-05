@@ -7,7 +7,6 @@
 // program
 #include "Intersect.h"
 
-
 namespace Batoidea
 {
 	class Renderable

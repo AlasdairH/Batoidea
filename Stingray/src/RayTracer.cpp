@@ -12,28 +12,32 @@ namespace Batoidea
 		// transfer objects and lights to raytracer for ease of multi-threaded access
 		m_objects = _renderables;
 		m_lights = _lights;
+		m_pixels = (Uint32*)_surface.pixels;
 
-		SDL_LockSurface(&_surface);
+		
 
 		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
 		
 		LOG_MESSAGE("Beginning Raytrace");
-
 		Timer timer;
+		SDL_LockSurface(&_surface);
 		// ray tracing the entire scene
 		for (int y = m_settings.renderResolutionHeight - 1; y >= 0; --y)
 		{
 			for (int x = 0; x < m_settings.renderResolutionWidth; ++x)
 			{
 				Ray cameraRay = camera.getRay(x, y);
-				//LOG_MESSAGE("(" << x << ", " << y << ") - (" << cameraRay.direction.x << ", " << cameraRay.direction.y << ")");
-				glm::vec3 pixel = trace(cameraRay);
+				glm::vec3 pixelColour = trace(cameraRay);
+				pixelColour *= 255;
 				
-				setPixelColour(_surface, x, y, pixel.r * 255, pixel.g * 255, pixel.b * 255);
+				//LOG_MESSAGE((int)pixelColour.r << ", " << (int)pixelColour.g << ", " << (int)pixelColour.b);
+				
+				m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
+				
 			}
 		}
-
 		SDL_UnlockSurface(&_surface);
+		
 		
 		LOG_MESSAGE("Raytrace Finished in " << timer.getDuration() << "s");
 		//free(image);
@@ -48,7 +52,7 @@ namespace Batoidea
 		std::shared_ptr<Sphere> closestRenderable;
 
 		
-		for (int i = 0; i < m_objects.size(); ++i)
+		for (unsigned int i = 0; i < m_objects.size(); ++i)
 		{
 			Intersect intersect = m_objects[i].intersect(_ray);
 			if (intersect.t1 != INFINITY)
@@ -106,15 +110,5 @@ namespace Batoidea
 			}
 		}
 		return intensity;
-	}
-
-	void RayTracer::setPixelColour(SDL_Surface &_surface, const int _x, const int _y, const int _r, const int _g, const int _b)
-	{
-		SDL_LockSurface(&_surface);
-
-		Uint32 *pixels = (Uint32*)_surface.pixels;
-		pixels[_x + m_settings.renderResolutionWidth * _y] = (_r << 16) | (_g << 8) | _b;
-
-		SDL_UnlockSurface(&_surface);
 	}
 }
