@@ -7,6 +7,7 @@
 // program
 #include "PCH.h"
 #include "Logger.h"
+#include "RenderQuad.h"
 #include "Sphere.h"
 #include "RayTracerSettings.h"
 #include "Ray.h"
@@ -44,7 +45,8 @@ namespace Batoidea
 
 	protected:
 
-		void renderSegmentToPixels(const glm::vec2 _start, const glm::vec2 _finish);
+		// TODO: Doxygen
+		void renderQuadToPixels(const glm::vec2 _start, const glm::vec2 _finish);
 
 		/** @brief Per pixel trace method
 		*	@param _ray The ray to trace through the scene
@@ -64,10 +66,14 @@ namespace Batoidea
 
 		std::shared_ptr<Threads::ThreadPool>		m_threadPool;	/**< The thread pool used to render the scene */
 
+		std::shared_ptr<Camera>						m_camera;		/**< The scene camera */
+
 		RayTracerSettings							m_settings;		/**< The ray tracer settings */
 
 		std::vector<Sphere>							m_objects;		/**< Vector of spheres in the scene */
 		std::vector<Light>							m_lights;		/**< Vector of lights in the scene */
+
+		std::mutex									m_pixelMutex;
 		Uint32										*m_pixels;		/**< Pointer to the pixels of the surface */
 	};
 }

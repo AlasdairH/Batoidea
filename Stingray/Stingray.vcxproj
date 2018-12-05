@@ -186,6 +186,7 @@
     <ClInclude Include="include\RayTracer.h" />
     <ClInclude Include="include\RayTracerSettings.h" />
     <ClInclude Include="include\Renderable.h" />
+    <ClInclude Include="include\RenderQuad.h" />
     <ClInclude Include="include\Sphere.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="include\ThreadPool.h" />

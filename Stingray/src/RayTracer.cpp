@@ -7,37 +7,28 @@ namespace Batoidea
 		m_settings = _settings;
 
 		m_threadPool = std::make_shared<Threads::ThreadPool>(std::thread::hardware_concurrency());
-		std::vector<std::future<glm::vec3>> futureVector;
+		
+		m_camera = std::make_shared<Camera>(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
 	}
 
 	SDL_Surface RayTracer::render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
-
+		std::vector<RenderQuad> renderQuads;
+		
 		// transfer objects and lights to raytracer for ease of multi-threaded access
 		m_objects = _renderables;
 		m_lights = _lights;
 		m_pixels = (Uint32*)_surface.pixels;
-
-		Camera camera(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
 		
 		LOG_MESSAGE("Beginning Raytrace");
 		Timer timer;
 		SDL_LockSurface(&_surface);
 		// ray tracing the entire scene
-		for (int y = m_settings.renderResolutionHeight - 1; y >= 0; --y)
+		for (unsigned int i = 0; i < renderQuads.size(); ++i)
 		{
-			for (int x = 0; x < m_settings.renderResolutionWidth; ++x)
-			{
-				Ray cameraRay = camera.getRay(x, y);
-				glm::vec3 pixelColour = trace(cameraRay);
-				pixelColour *= 255;
-				
-				//LOG_MESSAGE((int)pixelColour.r << ", " << (int)pixelColour.g << ", " << (int)pixelColour.b);
-				
-				m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
-				
-			}
+			renderQuadToPixels(renderQuads[i].tlc, renderQuads[i].brc);
 		}
+
 		SDL_UnlockSurface(&_surface);
 		
 		
@@ -47,9 +38,26 @@ namespace Batoidea
 		return _surface;
 	}
 
-	void RayTracer::renderSegmentToPixels(const glm::vec2 _start, const glm::vec2 _finish)
+	void RayTracer::renderQuadToPixels(const glm::vec2 _start, const glm::vec2 _finish)
 	{
+		for (int y = _start.y; y < _finish.y; ++y)
+		{
+			for (int x = _start.x; x < _finish.x; ++x)
+			{
+				Ray cameraRay = m_camera->getRay(x, y);
+				glm::vec3 pixelColour = trace(cameraRay);
+				pixelColour *= 255;
 
+				//LOG_MESSAGE((int)pixelColour.r << ", " << (int)pixelColour.g << ", " << (int)pixelColour.b);
+				
+				{
+					// lock  m_pixels when writing
+					std::lock_guard<std::mutex> pixelLock(m_pixelMutex);
+					m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
+				}
+
+			}
+		}
 	}
 
 	glm::vec3 RayTracer::trace(const Ray &_ray)
@@ -58,7 +66,6 @@ namespace Batoidea
 		float closestIntersect = INFINITY;
 		std::shared_ptr<Sphere> closestRenderable;
 
-		
 		for (unsigned int i = 0; i < m_objects.size(); ++i)
 		{
 			Intersect intersect = m_objects[i].intersect(_ray);
