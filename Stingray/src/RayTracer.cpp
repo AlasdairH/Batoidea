@@ -13,7 +13,47 @@ namespace Batoidea
 
 	SDL_Surface RayTracer::render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
-		LOG_MESSAGE("Calculating Render Quads")
+		LOG_MESSAGE("Calculating Render Quads");
+		std::vector<RenderQuad> renderQuads = calculateRenderQuads();
+
+		// transfer objects and lights to raytracer for ease of multi-threaded access
+		m_objects = _renderables;
+		m_lights = _lights;
+		m_pixels = (Uint32*)_surface.pixels;
+		
+		LOG_MESSAGE("Beginning Raytrace");
+
+		m_timer.reset();
+		SDL_LockSurface(&_surface);
+		// ray tracing the entire scene
+		for (unsigned int i = 0; i < renderQuads.size(); ++i)
+		{
+			m_threadPool->enqueue([=]
+			{
+				renderQuadToPixels(renderQuads[i].tlc, renderQuads[i].brc);
+			});
+		}
+
+		SDL_UnlockSurface(&_surface);
+
+		//free(image);
+
+		return _surface;
+	}
+
+	bool RayTracer::isRenderComplete()
+	{
+		if (m_threadPool->isTasksEmpty())
+		{
+			m_timer.saveDuration();
+			return true;
+		}
+
+		return false;
+	}
+
+	std::vector<RenderQuad> RayTracer::calculateRenderQuads()
+	{
 		std::vector<RenderQuad> renderQuads;
 		// get the width and height of each quad
 		int quadWidth = std::floor(m_settings.renderResolutionWidth / (float)m_settings.renderQuadResolutionWidth);
@@ -46,36 +86,11 @@ namespace Batoidea
 				renderQuads.push_back(RenderQuad(glm::vec2(x * quadWidth, m_settings.renderQuadResolutionHeight * quadHeight), glm::vec2((x * quadWidth) + quadWidth, m_settings.renderResolutionHeight)));
 			}
 			// doesn't really matter which remainder check this goes in as long as it is
+			// fill the little un-rendered block at the bottom right of the screen
 			renderQuads.push_back(RenderQuad(glm::vec2(m_settings.renderQuadResolutionWidth * quadWidth, m_settings.renderQuadResolutionHeight * quadHeight), glm::vec2(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight)));
 		}
-		// fill the little un-rendered block at the bottom right of the screen
 
-
-		
-		// transfer objects and lights to raytracer for ease of multi-threaded access
-		m_objects = _renderables;
-		m_lights = _lights;
-		m_pixels = (Uint32*)_surface.pixels;
-		
-		LOG_MESSAGE("Beginning Raytrace");
-		Timer timer;
-		SDL_LockSurface(&_surface);
-		// ray tracing the entire scene
-		for (unsigned int i = 0; i < renderQuads.size(); ++i)
-		{
-			m_threadPool->enqueue([=]
-			{
-				renderQuadToPixels(renderQuads[i].tlc, renderQuads[i].brc);
-			});
-		}
-
-		SDL_UnlockSurface(&_surface);
-		
-		
-		LOG_MESSAGE("Raytrace Finished in " << timer.getDuration() << "s");
-		//free(image);
-
-		return _surface;
+		return renderQuads;
 	}
 
 	void RayTracer::renderQuadToPixels(const glm::vec2 _start, const glm::vec2 _finish)

@@ -43,9 +43,38 @@ namespace Batoidea
 		*/
 		SDL_Surface render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface);
 
+		/** @brief Calculates the render quads
+		*	@return The list of RenderQuads for the viewport
+		*
+		*	Takes the viewport and divides it up into smaller segments called RenderQuads which each represent a segment of the final render. These
+		*	RenderQuads are then added to the threadpool to be ray traced.
+		*/
+		bool isRenderComplete();
+
+		/** @brief Returns the time of the last render if there was one
+		*	@return The list of RenderQuads for the viewport
+		*
+		*	Takes the viewport and divides it up into smaller segments called RenderQuads which each represent a segment of the final render. These
+		*	RenderQuads are then added to the threadpool to be ray traced.
+		*/
+		float getRenderTime() { return m_timer.getSavedDuration(); }
+
 	protected:
 
-		// TODO: Doxygen
+		/** @brief Calculates the render quads
+		*	@return The list of RenderQuads for the viewport
+		*
+		*	Takes the viewport and divides it up into smaller segments called RenderQuads which each represent a segment of the final render. These
+		*	RenderQuads are then added to the threadpool to be ray traced.
+		*/
+		std::vector<RenderQuad> calculateRenderQuads();
+
+		/** @brief Renders a specified segment of the image
+		*	@param _start the top left coordinate of the quad to render
+		*	@param _finish the bottom right coordinate of the quad to render
+		*
+		*	Ray traces a segment of the image. Could be the entire thing or just a small part of it, typically a RenderQuad.
+		*/
 		void renderQuadToPixels(const glm::vec2 _start, const glm::vec2 _finish);
 
 		/** @brief Per pixel trace method
@@ -63,6 +92,8 @@ namespace Batoidea
 		*	Computes the lighting for a given position and normal
 		*/
 		float computeLighting(glm::vec3 _normal, glm::vec3 _position);
+
+		Timer										m_timer;		/**< A timer for timing ray tracing operations */
 
 		std::shared_ptr<Threads::ThreadPool>		m_threadPool;	/**< The thread pool used to render the scene */
 

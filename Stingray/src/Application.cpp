@@ -104,34 +104,6 @@ int main()
 		}
 		// END INPUT
 
-		/*
-		std::vector<int> toRemove;
-
-		for (unsigned int i = 0; i < futureVector.size(); ++i)
-		{
-			if (futureVector[i].valid())
-			{
-				if (threadPool.isReady(futureVector[i]))
-				{
-					LOG_MESSAGE("Thread Complete");
-					vector.push_back(futureVector[i].get());
-					glm::vec3 colour = vector[vector.size() - 1];
-					std::cout << "(" << colour.x << ", " << colour.y << ", " << colour.z << ")" << std::endl;
-					std::cout << "Time: " << time.getDuration() << "s" << std::endl;
-				}
-			}
-			else
-			{
-				toRemove.push_back(i);
-			}
-		}
-
-		for (int i = 0; i < toRemove.size(); ++i)
-		{
-			futureVector.erase(futureVector.begin(), futureVector.begin() + i);
-		}
-		*/
-
 		window->render();
 	}
 

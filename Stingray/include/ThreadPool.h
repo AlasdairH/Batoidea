@@ -43,7 +43,14 @@ namespace Threads
 		*
 		*	Waits for all work to be done on each core and then stops each thread
 		*/
-		~ThreadPool();
+		~ThreadPool();		
+		
+		/** @brief Gets the task empty status
+		*	@return Returns the empty state of the task list
+		*
+		*	Returns whether the task queue is empty or not
+		*/
+		bool isTasksEmpty() { if (m_tasks.empty()) return true; else return false; }
 
 		/** @brief Enqueues a task to the thread pool
 		*	@param _task The task to be queued to the pool
@@ -114,13 +121,13 @@ namespace Threads
 		*/
 		void stop();
 
-		std::queue<Task>								m_tasks;					/**< The queue to tasks to be executed */
+		std::queue<Task>			m_tasks;					/**< The queue to tasks to be executed */
 
-		std::vector<std::thread>						m_threads;					/**< Vector of all worker threads */
+		std::vector<std::thread>	m_threads;					/**< Vector of all worker threads */
 
-		std::condition_variable							m_poolConditionalEvent;		/**< The thread pool conditional event that holds threads before they get a job */
-		std::mutex										m_queueProtectionMutex;		/**< The mutex which controlls access to the task queue */
-		bool											m_stopping = false;			/**< A flag for the state of the thread pool, if set to true the pool will stop */
+		std::condition_variable		m_poolConditionalEvent;		/**< The thread pool conditional event that holds threads before they get a job */
+		std::mutex					m_queueProtectionMutex;		/**< The mutex which controlls access to the task queue */
+		bool						m_stopping = false;			/**< A flag for the state of the thread pool, if set to true the pool will stop */
 
 	};
 }
