@@ -17,8 +17,8 @@ namespace Batoidea
 
 		int threads = 1;
 
-		int threadResolutionWidth = 1;
-		int threadResolutioNHeight = 1;
+		int renderQuadResolutionWidth = 7;
+		int renderQuadResolutionHeight = 7;
 
 		float fov = 30.0f;
 

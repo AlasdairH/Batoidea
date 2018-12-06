@@ -13,7 +13,44 @@ namespace Batoidea
 
 	SDL_Surface RayTracer::render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
+		LOG_MESSAGE("Calculating Render Quads")
 		std::vector<RenderQuad> renderQuads;
+		// get the width and height of each quad
+		int quadWidth = std::floor(m_settings.renderResolutionWidth / (float)m_settings.renderQuadResolutionWidth);
+		int quadHeight = std::floor(m_settings.renderResolutionHeight / (float)m_settings.renderQuadResolutionHeight);
+		// add render quads for the width of the image
+		for (int x = 0; x < m_settings.renderQuadResolutionWidth; ++x)
+		{
+			for (int y = 0; y < m_settings.renderQuadResolutionHeight; ++y)
+			{
+				renderQuads.push_back(RenderQuad(glm::vec2(x * quadWidth, y * quadHeight), glm::vec2((x * quadWidth) + quadWidth, (y * quadHeight) + quadHeight)));
+			}
+		}
+
+		// filling in any border due to there being a remainder on the quad width. We'll just add another few quads to fill the space
+		int widthRemainder = m_settings.renderQuadResolutionWidth - (m_settings.renderQuadResolutionWidth * quadWidth);
+		int heightRemainder = m_settings.renderQuadResolutionHeight - (m_settings.renderQuadResolutionHeight * quadHeight);
+		// correct for width
+		if (widthRemainder != 0)
+		{
+			for (int y = 0; y < m_settings.renderQuadResolutionHeight; ++y)
+			{
+				renderQuads.push_back(RenderQuad(glm::vec2(m_settings.renderQuadResolutionWidth * quadWidth, y * quadHeight), glm::vec2(m_settings.renderResolutionWidth, (y * quadHeight) + quadHeight)));
+			}
+		}
+		// correct for height
+		if (heightRemainder != 0)
+		{
+			for (int x = 0; x < m_settings.renderQuadResolutionWidth; ++x)
+			{
+				renderQuads.push_back(RenderQuad(glm::vec2(x * quadWidth, m_settings.renderQuadResolutionHeight * quadHeight), glm::vec2((x * quadWidth) + quadWidth, m_settings.renderResolutionHeight)));
+			}
+			// doesn't really matter which remainder check this goes in as long as it is
+			renderQuads.push_back(RenderQuad(glm::vec2(m_settings.renderQuadResolutionWidth * quadWidth, m_settings.renderQuadResolutionHeight * quadHeight), glm::vec2(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight)));
+		}
+		// fill the little un-rendered block at the bottom right of the screen
+
+
 		
 		// transfer objects and lights to raytracer for ease of multi-threaded access
 		m_objects = _renderables;
@@ -26,7 +63,10 @@ namespace Batoidea
 		// ray tracing the entire scene
 		for (unsigned int i = 0; i < renderQuads.size(); ++i)
 		{
-			renderQuadToPixels(renderQuads[i].tlc, renderQuads[i].brc);
+			m_threadPool->enqueue([=]
+			{
+				renderQuadToPixels(renderQuads[i].tlc, renderQuads[i].brc);
+			});
 		}
 
 		SDL_UnlockSurface(&_surface);
@@ -51,7 +91,7 @@ namespace Batoidea
 				//LOG_MESSAGE((int)pixelColour.r << ", " << (int)pixelColour.g << ", " << (int)pixelColour.b);
 				
 				{
-					// lock  m_pixels when writing
+					// lock  m_pixels when writing, this is not strictly required as all threads should be writing to different parts of the pixel pointer
 					std::lock_guard<std::mutex> pixelLock(m_pixelMutex);
 					m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
 				}
