@@ -6,6 +6,7 @@
 
 // program
 #include "Intersect.h"
+#include "Material.h"
 
 namespace Batoidea
 {
@@ -16,8 +17,9 @@ namespace Batoidea
 
 		virtual Intersect intersect(const Ray &_ray) = 0;
 
-		inline glm::vec4 getColour() { return m_colour; }
+		inline Material getMaterial() { return m_material; }
+
 	protected:
-		glm::vec4 m_colour;
+		Material m_material;
 	};
 }

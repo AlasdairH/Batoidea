@@ -14,9 +14,10 @@ namespace Batoidea
 	public:
 		Material() { };
 
-		glm::vec3 colourDiffuse;
+		glm::vec3 colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 
-		float shine;
+		float shine = 1.0f;
+		float reflectivity = 0.5f;
 
 	};
 }

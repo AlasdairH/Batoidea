@@ -16,11 +16,11 @@ namespace Batoidea
 	class Sphere : public Renderable
 	{
 	public:
-		Sphere(const glm::vec3 &_centre, const float &_radius, const glm::vec4 _colour)
+		Sphere(const glm::vec3 &_centre, const float &_radius, const Material _material)
 		{
 			m_centre = _centre;
 			m_radius = _radius;
-			m_colour = _colour;
+			m_material = _material;
 		}
 
 		Intersect intersect(const Ray &_ray) override;

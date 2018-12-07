@@ -60,6 +60,8 @@ namespace Batoidea
 		float getRenderTime() { return m_timer.getSavedDuration(); }
 
 	protected:
+		// TODO: Doxygen
+		void calculateClosestIntersection(std::shared_ptr<Sphere> &_sphere, float &_closestIntersection, const Ray &_ray, Intersect _limits);
 
 		/** @brief Calculates the render quads
 		*	@return The list of RenderQuads for the viewport
@@ -79,19 +81,22 @@ namespace Batoidea
 
 		/** @brief Per pixel trace method
 		*	@param _ray The ray to trace through the scene
+		*	@param _depth The reflection depth (if needed)
 		*	@return The colour (normalised) at the ray end
 		*
 		*	The per pixel render method which traces a ray through the scene.
 		*/
-		glm::vec3 trace(const Ray &_ray);
+		glm::vec3 trace(const Ray &_ray, int _depth);
 		/** @brief Lighting Calculation 
+		*	@param _object The object that's having it's lighting computed
 		*	@param _normal The normal of the point to calculate lighting on
 		*	@param _position The position in space of which to calculate the lighting of
+		*	@param _pos_rayToCamera a vector from the object to the camaera ( - _ray.direction )
 		*	@return The light intensity at the position
 		*
 		*	Computes the lighting for a given position and normal
 		*/
-		float computeLighting(glm::vec3 _normal, glm::vec3 _position);
+		float computeLighting(std::shared_ptr<Sphere> _sphere, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera);
 
 		Timer										m_timer;		/**< A timer for timing ray tracing operations */
 

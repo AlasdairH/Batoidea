@@ -106,6 +106,8 @@ namespace Threads
 			}
 		}
 
+		void tsPrint(std::string _string);
+
 	protected:
 		/** @brief Starts the thread pool. Called by constructor.
 		*	@param _numThreads The number of threads to start the pool with
@@ -124,6 +126,8 @@ namespace Threads
 		std::queue<Task>			m_tasks;					/**< The queue to tasks to be executed */
 
 		std::vector<std::thread>	m_threads;					/**< Vector of all worker threads */
+
+		std::mutex					m_consoleMutex;				/**< A mutex for controlling prints to the console */
 
 		std::condition_variable		m_poolConditionalEvent;		/**< The thread pool conditional event that holds threads before they get a job */
 		std::mutex					m_queueProtectionMutex;		/**< The mutex which controlls access to the task queue */

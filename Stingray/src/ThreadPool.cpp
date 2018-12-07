@@ -20,6 +20,14 @@ namespace Threads
 		stop();
 	}
 
+	void ThreadPool::tsPrint(std::string _string)
+	{
+		{
+			std::lock_guard<std::mutex> lock(m_consoleMutex);
+			std::cout << _string.c_str() << std::endl;
+		}
+	}
+
 	void ThreadPool::start(const int _numThreads)
 	{
 		for (int i = 0; i < _numThreads; ++i)
@@ -53,7 +61,10 @@ namespace Threads
 
 					// if we've got to here then this thread has been assigned and we need to run it
 					task();
-
+					if (m_tasks.empty())
+					{
+						tsPrint("ThreadPool: All tasks completed");
+					}
 				}
 			});
 		}

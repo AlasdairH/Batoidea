@@ -65,18 +65,43 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
-	renderables.push_back(Sphere(glm::vec3(-2, 0, 5.0f), 0.5f, glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(0, 0, 6.0f), 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
-	renderables.push_back(Sphere(glm::vec3(2, 0, 7.0f), 0.5f, glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)));
+	Material material;
+	material.shine = 1000.0f;
+
+	float distance = 5.0f;
+	float radius = 0.8f;
+
+	material.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
+
+	renderables.push_back(Sphere(glm::vec3(-1.8f, 0, 7), radius, material));
+	
+	material.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	renderables.push_back(Sphere(glm::vec3(0, -1.0f, 5), 1.2f, material));	
+	
+	material.colourDiffuse = glm::vec3(1.0f, 0.0f, 1.0f);
+
+	renderables.push_back(Sphere(glm::vec3(2.2f, 0, 4), radius + 0.5f, material));
 
 	std::vector<Light> lights;
 	Light light;
-	light.type = LIGHT_DIRECTIONAL;
-	light.direction = glm::vec3(0.5f, 1, 0);
+	light.type = LIGHT_POINT;
+	light.direction = glm::vec3(4, -0.5, 0);
+	light.position = light.direction;
+	//lights.push_back(light);	
 
-	lights.push_back(light);
+	Light light2;
+	light2.type = LIGHT_POINT;
+	light2.direction = glm::vec3(-3, 2, 0);
+	light2.position = light2.direction;
+	lights.push_back(light2);
 
-
+	Light light3;
+	light3.type = LIGHT_POINT;
+	light3.direction = glm::vec3(3, 2, 0);
+	light3.position = light3.direction;
+	lights.push_back(light3);
+	
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
