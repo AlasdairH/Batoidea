@@ -19,7 +19,7 @@ namespace Batoidea
 		float shine = 1.0f;
 
 
-		float reflectiveness = 0.3f;
+		float reflectiveness = 0.0f;
 
 	};
 }

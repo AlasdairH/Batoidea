@@ -18,13 +18,11 @@ namespace Batoidea
 	class Triangle : public Renderable
 	{
 	public:
+		Triangle();
 		Triangle(const glm::vec3 &_v0, const glm::vec3 &_v1, const glm::vec3 &_v2);
 
-		Intersect intersect(const Ray &_ray) override;
+		Intersect intersect(const Ray &_ray, const Intersect &_limits) override;
 
-	protected:
-		glm::vec3 m_v0;
-		glm::vec3 m_v1;
-		glm::vec3 m_v2;
+		glm::vec3 verts[3];
 	};
 }

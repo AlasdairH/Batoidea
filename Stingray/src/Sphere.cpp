@@ -3,7 +3,7 @@
 namespace Batoidea
 {
 
-	Intersect Sphere::intersect(const Ray &_ray)
+	Intersect Sphere::intersect(const Ray &_ray, const Intersect &_intersect)
 	{
 		glm::vec3 OC = _ray.origin - m_centre;
 
@@ -17,6 +17,6 @@ namespace Batoidea
 
 		float t1 = (-k2 + sqrt(discriminant)) / (2 * k1);
 		float t2 = (-k2 - sqrt(discriminant)) / (2 * k1);
-		return Intersect(t1, t2);
+		return Intersect(t1, t2, glm::vec3(0));
 	}
 }

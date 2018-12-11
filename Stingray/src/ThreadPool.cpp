@@ -71,10 +71,12 @@ namespace Threads
 
 					// if we've got to here then this thread has been assigned and we need to run it
 					task();
+					/*
 					if (m_tasks.empty())
 					{
 						tsPrint("ThreadPool: All tasks completed");
 					}
+					*/
 				}
 			});
 		}

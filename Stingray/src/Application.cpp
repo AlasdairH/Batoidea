@@ -14,32 +14,14 @@
 #include "ThreadPool.h"
 #include "Timer.h"
 #include "RayTracer.h"
+#include "ObjectLoader.h"
+#include "Object.h"
 
 #define RAND_FLOAT static_cast <float> (rand()) / static_cast <float> (RAND_MAX)
 
 #undef main
 
 // bat oi de a
-
-glm::vec3 bounce(int _iterations)
-{
-	glm::vec3 result = glm::vec3(0);
-
-	for (float x = 0.0f; x < 1.0f; x += 0.01f)
-	{
-		for (float y = 1.0f; y > 0.0f; y -= 0.01f)
-		{
-			for (int i = 0; i < _iterations; ++i)
-			{
-				result.x = sin(cos(cos(x + y)));
-				result.y = cos(sin(cos(x + y)));
-				result.z = cos(cos(sin(x + y)));
-			}
-		}
-	}
-
-	return result;
-}
 
 void store(std::vector<glm::vec3> &_vector, glm::vec3 _value)
 {
@@ -64,36 +46,33 @@ int main()
 
 
 	RayTracerSettings rtSettings;
-	rtSettings.threads = std::thread::hardware_concurrency();
-	rtSettings.threads = 8;
+	//rtSettings.threads = 1;
 	RayTracer raytracer(rtSettings);
 
-	std::vector<Sphere> renderables;
+	std::vector<Object> renderables;
 	Material material;
 	material.shine = 1000.0f;
+	material.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	material.reflectiveness = 0.0f;
 
-	float distance = 5.0f;
-	float radius = 0.3f;
 
-	for (int x = -3; x <= 3; ++x)
+	Object object;
+	std::vector<Triangle> triangles = ObjectLoader::loadObject("models/deer.obj");
+	for (unsigned int i = 0; i < triangles.size(); ++i)
 	{
-		for (int y = -3; y <= 3; ++y)
-		{
-			for (int z = 8; z <= 14; ++z)
-			{
-				material.colourDiffuse = glm::vec3(RAND_FLOAT, RAND_FLOAT, RAND_FLOAT);
-				renderables.push_back(Sphere(glm::vec3(x, y, z), radius, material));
-			}
-		}
+		object.addTriange(triangles[i]);
 	}
+	object.setMaterial(material);
+
+	renderables.push_back(object);
 
 	std::vector<Light> lights;
 
 	Light light1;
 	light1.type = LIGHT_POINT;
-	light1.direction = glm::vec3(-4, 0, 0);
+	light1.direction = glm::vec3(0, 4, 6);
 	light1.position = light1.direction;
-	light1.intensity = 0.5f;
+	light1.intensity = 1.0f;
 	lights.push_back(light1);
 
 	Light light2;
@@ -101,9 +80,8 @@ int main()
 	light2.direction = glm::vec3(4, 0, 0);
 	light2.position = light2.direction;
 	light2.intensity = 0.5f;
-	lights.push_back(light2);
+	//lights.push_back(light2);
 	
-
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
 
 	bool isRunning = true;
@@ -115,6 +93,7 @@ int main()
 		{
 			if (incomingEvent.type == SDL_QUIT)
 			{
+				raytracer.stopCurrentRender();
 				isRunning = false;
 			}
 
@@ -134,7 +113,7 @@ int main()
 					}
 					break;				
 				case SDLK_BACKSPACE:
-					raytracer.stop();
+					raytracer.stopCurrentRender();
 					break;
 				}
 			}

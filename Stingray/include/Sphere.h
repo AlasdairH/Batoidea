@@ -23,7 +23,7 @@ namespace Batoidea
 			m_material = _material;
 		}
 
-		Intersect intersect(const Ray &_ray) override;
+		Intersect intersect(const Ray &_ray, const Intersect &_intersect) override;
 
 		inline glm::vec3 getCentre() { return m_centre; }
 

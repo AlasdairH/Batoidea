@@ -15,7 +15,7 @@ namespace Batoidea
 		int renderResolutionWidth = SCREEN_WIDTH;
 		int renderResolutionHeight = SCREEN_HEIGHT;
 
-		int threads = 1;
+		int threads = std::thread::hardware_concurrency();
 
 		int renderQuadResolutionWidth = 7;
 		int renderQuadResolutionHeight = 7;

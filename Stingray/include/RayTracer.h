@@ -14,6 +14,7 @@
 #include "Timer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Object.h"
 
 namespace Batoidea
 {
@@ -41,7 +42,7 @@ namespace Batoidea
 		*
 		*	Takes renderables and a renderable surface and ray traces the scene from the camera
 		*/
-		SDL_Surface render(std::vector<Sphere> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface);
+		SDL_Surface render(std::vector<Object> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface);
 
 		/** @brief Calculates the render quads
 		*	@return The list of RenderQuads for the viewport
@@ -55,11 +56,11 @@ namespace Batoidea
 		*
 		*	Checks for an active render, if there is one then stop it
 		*/
-		inline void stop() { m_threadPool->cancelQueue(); }
+		inline void stopCurrentRender() { m_threadPool->cancelQueue(); }
 
 	protected:
 		// TODO: Doxygen
-		void calculateClosestIntersection(std::shared_ptr<Sphere> &_sphere, float &_closestIntersection, const Ray &_ray, Intersect _limits);
+		void calculateClosestIntersection(std::shared_ptr<Object> &_renderable, float &_closestIntersection, glm::vec3 &_normal, Ray _ray, Intersect _limits);
 
 		/** @brief Calculates the render quads
 		*	@return The list of RenderQuads for the viewport
@@ -96,7 +97,7 @@ namespace Batoidea
 		*
 		*	Computes the lighting for a given position and normal
 		*/
-		float computeLighting(std::shared_ptr<Sphere> _sphere, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera);
+		float computeLighting(std::shared_ptr<Object> _renderable, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera);
 
 		// TODO: Doxygen
 		glm::vec3 reflect(glm::vec3 _rayDir, glm::vec3 _normal) 
@@ -112,7 +113,7 @@ namespace Batoidea
 
 		RayTracerSettings							m_settings;		/**< The ray tracer settings */
 
-		std::vector<Sphere>							m_objects;		/**< Vector of spheres in the scene */
+		std::vector<Object>							m_objects;		/**< Vector of objects in the scene */
 		std::vector<Light>							m_lights;		/**< Vector of lights in the scene */
 
 		std::mutex									m_pixelMutex;

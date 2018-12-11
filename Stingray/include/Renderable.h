@@ -15,7 +15,7 @@ namespace Batoidea
 	public:
 		Renderable() { }
 
-		virtual Intersect intersect(const Ray &_ray) = 0;
+		virtual Intersect intersect(const Ray &_ray, const Intersect &_limits) { return Intersect(INFINITY, INFINITY, glm::vec3(0)); };
 
 		inline Material getMaterial() { return m_material; }
 
