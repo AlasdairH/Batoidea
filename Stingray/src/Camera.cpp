@@ -17,7 +17,7 @@ namespace Batoidea
 		m_U = glm::normalize(m_U);
 		m_V = glm::normalize(m_V);
 
-		m_fieldOfView = glm::radians(70.0f);
+		m_fieldOfView = glm::radians(50.0f);
 		m_aspectRatio = (float)m_viewportResolutionWidth / (float)m_viewportResolutionHeight;
 		m_halfFieldOfView = m_fieldOfView / 2.0f;
 	}
@@ -33,7 +33,7 @@ namespace Batoidea
 		float pixelNormalisedY = 1 - 2 * pixelNDCY;
 
 		// accounting for field of view
-		float pixelCameraX = pixelNormalisedX * tan(m_halfFieldOfView) * m_aspectRatio; // correct for aspect ratio
+		float pixelCameraX = pixelNormalisedX * tan(m_halfFieldOfView) * (m_aspectRatio); // correct for aspect ratio
 		float pixelCameraY = pixelNormalisedY * tan(m_halfFieldOfView);
 
 		glm::vec3 pixCameraSpace = glm::vec3(pixelCameraX, pixelCameraY, 1);

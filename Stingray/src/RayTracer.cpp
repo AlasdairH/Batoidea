@@ -190,13 +190,11 @@ namespace Batoidea
 			return localColour;
 		}
 
-		//LOG_MESSAGE("FUCK");
-		glm::vec3 reflection = glm::reflect(-_ray.direction, normal);
-		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.001f, INFINITY));
+		glm::vec3 reflection = reflect(-_ray.direction, normal);
+		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.1f, INFINITY));
 
 		// clamp to [0.0:1.0]
 		localColour = localColour * (1 - reflectivity) + reflectedColour * reflectivity;
-		localColour = glm::clamp(localColour, 0.0f, 1.0f);
 
 		return localColour;
 	}

@@ -100,6 +100,12 @@ namespace Batoidea
 		*/
 		float computeLighting(std::shared_ptr<Sphere> _sphere, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera);
 
+		// TODO: Doxygen
+		glm::vec3 reflect(glm::vec3 _rayDir, glm::vec3 _normal) 
+		{
+			return 2.0f * _normal * glm::dot(_normal, _rayDir) - _rayDir;
+		}
+
 		Timer										m_timer;		/**< A timer for timing ray tracing operations */
 
 		std::shared_ptr<Threads::ThreadPool>		m_threadPool;	/**< The thread pool used to render the scene */

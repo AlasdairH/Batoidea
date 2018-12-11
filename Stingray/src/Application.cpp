@@ -68,7 +68,7 @@ int main()
 	Material material;
 	material.shine = 1000.0f;
 
-	float distance = 6.0f;
+	float distance = 5.0f;
 	float radius = 0.8f;
 
 	material.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -77,32 +77,27 @@ int main()
 	
 	material.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	renderables.push_back(Sphere(glm::vec3(0, -1.0f, distance), radius, material));
+	renderables.push_back(Sphere(glm::vec3(0, 0, distance), radius, material));
 	
-	material.colourDiffuse = glm::vec3(1.0f, 0.0f, 1.0f);
+	material.colourDiffuse = glm::vec3(0.0f, 0.0f, 1.0f);
 
-	renderables.push_back(Sphere(glm::vec3(2.0f, 0, distance), radius, material));
+	renderables.push_back(Sphere(glm::vec3(2, 0, distance), radius, material));
 
 	std::vector<Light> lights;
-	Light light;
-	light.type = LIGHT_POINT;
-	light.direction = glm::vec3(0, 2, 0);
-	light.position = light.direction;
-	//lights.push_back(light);	
+
+	Light light1;
+	light1.type = LIGHT_POINT;
+	light1.direction = glm::vec3(-4, 2, 0);
+	light1.position = light1.direction;
+	light1.intensity = 0.5f;
+	lights.push_back(light1);
 
 	Light light2;
 	light2.type = LIGHT_POINT;
-	light2.direction = glm::vec3(-3, 2, 0);
+	light2.direction = glm::vec3(4, 2, 0);
 	light2.position = light2.direction;
 	light2.intensity = 0.5f;
 	lights.push_back(light2);
-
-	Light light3;
-	light3.type = LIGHT_POINT;
-	light3.direction = glm::vec3(3, 2, 0);
-	light3.position = light3.direction;
-	light3.intensity = 0.5f;
-	lights.push_back(light3);
 	
 
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
