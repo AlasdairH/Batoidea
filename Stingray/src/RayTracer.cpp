@@ -61,17 +61,14 @@ namespace Batoidea
 		{
 			Intersect intersect = m_objects[i].intersect(Ray(_ray.origin, _ray.direction));
 
-			
 			if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < closestIntersect)
 			{
 				closestIntersect = intersect.t1;
-				//LOG_MESSAGE(closestIntersect);
 				closestRenderable = std::make_shared<Sphere>(m_objects[i]);
 			}
 			if (intersect.t2 > _limits.t1 && intersect.t2 < _limits.t2 && intersect.t2 < closestIntersect)
 			{
 				closestIntersect = intersect.t2;
-				//LOG_MESSAGE(closestIntersect);
 				closestRenderable = std::make_shared<Sphere>(m_objects[i]);
 			}
 		}
