@@ -74,23 +74,6 @@ namespace Batoidea
 				//LOG_MESSAGE(closestIntersect);
 				closestRenderable = std::make_shared<Sphere>(m_objects[i]);
 			}
-			
-
-			/*
-			if (intersect.t1 != INFINITY && intersect.t1 > 0.0f)
-			{
-				if (intersect.t1 < closestIntersect && _limits.t1 < intersect.t1 < _limits.t2)
-				{
-					closestIntersect = intersect.t1;
-					closestRenderable = std::make_shared<Sphere>(m_objects[i]);
-				}
-				if (intersect.t2 < closestIntersect && _limits.t1 < intersect.t2 < _limits.t2 )
-				{
-					closestIntersect = intersect.t2;
-					closestRenderable = std::make_shared<Sphere>(m_objects[i]);
-				}
-			}
-			*/
 		}
 
 		_sphere = closestRenderable;
@@ -147,11 +130,9 @@ namespace Batoidea
 				Ray cameraRay = m_camera->getRay(x, y);
 				glm::vec3 pixelColour = trace(cameraRay, m_settings.reflectionRecursionDepth, Intersect(0.0f, 100.0f));
 				pixelColour *= 255;
-
-				//LOG_MESSAGE((int)pixelColour.r << ", " << (int)pixelColour.g << ", " << (int)pixelColour.b);
 				
+				// lock  m_pixels when writing, this is not strictly required as all threads should be writing to different parts of the pixel pointer
 				{
-					// lock  m_pixels when writing, this is not strictly required as all threads should be writing to different parts of the pixel pointer
 					std::lock_guard<std::mutex> pixelLock(m_pixelMutex);
 					m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
 				}
@@ -191,7 +172,6 @@ namespace Batoidea
 		glm::vec3 reflection = reflect(-_ray.direction, normal);
 		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.1f, INFINITY));
 
-		// clamp to [0.0:1.0]
 		localColour = localColour * (1 - reflectivity) + reflectedColour * reflectivity;
 
 		return localColour;
