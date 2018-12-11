@@ -17,8 +17,8 @@ namespace Batoidea
 
 		int threads = std::thread::hardware_concurrency();
 
-		int renderQuadResolutionWidth = 7;
-		int renderQuadResolutionHeight = 7;
+		int renderQuadResolutionWidth = 20;
+		int renderQuadResolutionHeight = 20;
 
 		float fov = 30.0f;
 

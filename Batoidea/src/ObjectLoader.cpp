@@ -2,11 +2,14 @@
 
 namespace Batoidea
 {
-	std::vector<Triangle> ObjectLoader::loadObject(const std::string & _filepath)
+	Object ObjectLoader::loadObject(const std::string & _filepath)
 	{
+		Object object;
 		std::vector<Triangle> tris;
-
 		std::vector<glm::vec3> verts;
+		std::vector<glm::vec3> normals;
+
+		BoundingBox boundingBox;
 
 		int parsedLines = 0;
 		std::string objFile = ObjectLoader::loadTextFile(_filepath);
@@ -36,7 +39,44 @@ namespace Batoidea
 				float y = std::stof(yVal);
 				float z = std::stof(zVal);
 
+				// bounding box generation
+				// min
+				if (x < boundingBox.bounds[0].x)
+					boundingBox.bounds[0].x = x;
+				if (y < boundingBox.bounds[0].y)
+					boundingBox.bounds[0].y = y;
+				if (z < boundingBox.bounds[0].z)
+					boundingBox.bounds[0].z = z;
+
+				// max
+				if (x > boundingBox.bounds[1].x)
+					boundingBox.bounds[1].x = x;
+				if (y > boundingBox.bounds[1].y)
+					boundingBox.bounds[1].y = y;
+				if (z > boundingBox.bounds[1].z)
+					boundingBox.bounds[1].z = z;
+
 				verts.push_back(glm::vec3(x, y, z));
+				++parsedLines;
+			}			
+			
+			// normal line
+			if (line.find("n ") != std::string::npos)
+			{
+				size_t firstSpaceIndex = line.find(" ", 0);
+				size_t secondSpaceIndex = line.find(" ", firstSpaceIndex + 1);
+				size_t thirdSpaceIndex = line.find(" ", secondSpaceIndex + 1);
+				size_t eolIndex = line.find("\n", i);
+
+				std::string xVal = line.substr(firstSpaceIndex + 1, secondSpaceIndex - firstSpaceIndex - 1);
+				std::string yVal = line.substr(secondSpaceIndex + 1, thirdSpaceIndex - secondSpaceIndex - 1);
+				std::string zVal = line.substr(thirdSpaceIndex + 1, eolIndex - thirdSpaceIndex - 1);
+
+				float x = std::stof(xVal);
+				float y = std::stof(yVal);
+				float z = std::stof(zVal);
+
+				normals.push_back(glm::vec3(x, y, z));
 				++parsedLines;
 			}
 
@@ -50,6 +90,7 @@ namespace Batoidea
 
 				// create a vector for the extracted indices
 				std::vector<int> vIncides;
+				std::vector<int> vnIncides;
 				// for each split in the face components
 				for (unsigned int j = 0; j < splitLine.size(); ++j)
 				{
@@ -57,6 +98,9 @@ namespace Batoidea
 					std::vector<std::string> splitBlock = ObjectLoader::split(splitLine[j], '/');
 					// get the vertex index
 					vIncides.push_back(std::stoi(splitBlock[0]));
+					// IGNORE TEXTURE (for now)
+					// get the vertex normal index
+					vnIncides.push_back(std::stoi(splitBlock[2]));
 				}
 
 				Triangle tri;
@@ -65,6 +109,7 @@ namespace Batoidea
 				{
 					// grab the split data for the current vertex and store it together 
 					tri.verts[j] = glm::vec3(verts[vIncides[j] - 1]);
+					tri.normals[j] = glm::vec3(normals[vnIncides[j] - 1]);
 				}
 				tris.push_back(tri);
 
@@ -75,8 +120,10 @@ namespace Batoidea
 			i = eol;
 		}
 
+		object.setBoundingBox(boundingBox);
+		object.tris = tris;
 
-		return tris;
+		return object;
 	}
 
 	std::string ObjectLoader::loadTextFile(std::string _filepath)

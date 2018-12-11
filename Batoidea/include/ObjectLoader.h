@@ -9,13 +9,14 @@
 // program
 #include "PCH.h"
 #include "Triangle.h"
+#include "Object.h"
 
 namespace Batoidea
 {
 	class ObjectLoader
 	{
 	public:
-		static std::vector<Triangle> loadObject(const std::string & _filepath);
+		static Object loadObject(const std::string & _filepath);
 
 	protected:
 		static std::string loadTextFile(std::string _filepath);

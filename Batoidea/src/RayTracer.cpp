@@ -8,7 +8,7 @@ namespace Batoidea
 
 		m_threadPool = std::make_shared<Threads::ThreadPool>(m_settings.threads);
 		
-		m_camera = std::make_shared<Camera>(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
+		m_camera = std::make_shared<Camera>(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, -0.1f, 0));
 	}
 
 	SDL_Surface RayTracer::render(std::vector<Object> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
@@ -59,6 +59,12 @@ namespace Batoidea
 		// get the closest objcet in the ray intersections
 		for (unsigned int i = 0; i < m_objects.size(); ++i)
 		{
+			// test for a bounding intersection before testing all triangles of a mesh
+			if (!m_objects[i].boundIntersection(_ray))
+			{
+				continue;
+			}
+
 			for (unsigned int j = 0; j < m_objects[i].tris.size(); ++j)
 			{
 				Intersect intersect = m_objects[i].tris[j].intersect(Ray(_ray.origin, _ray.direction), _limits);

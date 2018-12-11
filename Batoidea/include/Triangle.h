@@ -24,5 +24,6 @@ namespace Batoidea
 		Intersect intersect(const Ray &_ray, const Intersect &_limits) override;
 
 		glm::vec3 verts[3];
+		glm::vec3 normals[3];
 	};
 }

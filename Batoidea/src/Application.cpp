@@ -49,32 +49,32 @@ int main()
 	//rtSettings.threads = 1;
 	RayTracer raytracer(rtSettings);
 
-	std::vector<Object> renderables;
 	Material materialWhite;
 	materialWhite.shine = 1000.0f;
 	materialWhite.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-	materialWhite.reflectiveness = 0.5f;	
+	materialWhite.reflectiveness = 0.6f;	
 	
 	Material materialRed;
 	materialRed.shine = 1000.0f;
 	materialRed.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
-	materialRed.reflectiveness = 0.0f;
+	materialRed.reflectiveness = 0.1f;
 
+	Material materialGreen;
+	materialGreen.shine = 1000.0f;
+	materialGreen.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
+	materialGreen.reflectiveness = 0.1f;
 
-	Object object;
-	Object groundPlane;
-	std::vector<Triangle> objectTriangles = ObjectLoader::loadObject("models/deer.obj");
-	std::vector<Triangle> groundPlaneTriangles = ObjectLoader::loadObject("models/plane.obj");
+	Object object1 = ObjectLoader::loadObject("models/deer1.obj");
+	Object object2 = ObjectLoader::loadObject("models/deer2.obj");
+	Object groundPlane = ObjectLoader::loadObject("models/plane.obj");
 	
-	object.tris = objectTriangles;
-	groundPlane.tris = groundPlaneTriangles;
-
-	//material.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
-	
-	object.setMaterial(materialRed);
+	object1.setMaterial(materialRed);
+	object2.setMaterial(materialGreen);
 	groundPlane.setMaterial(materialWhite);
 
-	renderables.push_back(object);
+	std::vector<Object> renderables;
+	renderables.push_back(object1);
+	renderables.push_back(object2);
 	renderables.push_back(groundPlane);
 
 
@@ -89,12 +89,17 @@ int main()
 
 	Light light2;
 	light2.type = LIGHT_POINT;
-	light2.direction = glm::vec3(4, 0, 0);
+	light2.direction = glm::vec3(4, 2, 0);
 	light2.position = light2.direction;
 	light2.intensity = 0.5f;
-	//lights.push_back(light2);
+	lights.push_back(light2);
 	
 	SDL_memset(window->getSurface()->pixels, 0, window->getSurface()->h * window->getSurface()->pitch);
+
+	Timer renderTimer;
+	bool renderStarted = false;
+	float lastRenderTime = 0.0f;
+
 
 	bool isRunning = true;
 	while (isRunning)
@@ -118,6 +123,8 @@ int main()
 					{
 						SDL_FillRect(window->getSurface(), NULL, 0x000000);
 						raytracer.render(renderables, lights, *window->getSurface());
+						renderStarted = true;
+						renderTimer.reset();
 					}
 					else
 					{
@@ -126,10 +133,32 @@ int main()
 					break;				
 				case SDLK_BACKSPACE:
 					raytracer.stopCurrentRender();
+					break;				
+				case SDLK_s:
+					if (raytracer.isRenderComplete())
+					{
+						LOG_MESSAGE("Saving current render");
+						SDL_SaveBMP(window->getSurface(), "Render.bmp");
+					}
+					else
+					{
+						LOG_ERROR("Unable to save, render in progress");
+					}
 					break;
 				}
 			}
 		}
+
+		if (renderStarted)
+		{
+			if (raytracer.isRenderComplete())
+			{
+				lastRenderTime = renderTimer.getDuration();
+				LOG_MESSAGE("Scene rendered in " << lastRenderTime << "s");
+				renderStarted = false;
+			}
+		}
+
 		// END INPUT
 
 		window->render();
