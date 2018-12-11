@@ -55,29 +55,34 @@ namespace Batoidea
 	{
 		float closestIntersect = INFINITY;
 		std::shared_ptr<Object> closestRenderable = nullptr;
-
+		
 		// get the closest objcet in the ray intersections
 		for (unsigned int i = 0; i < m_objects.size(); ++i)
 		{
-			Intersect stdIntersect(0.001f, INFINITY);
-			Intersect intersect = m_objects[i].intersect(Ray(_ray.origin, _ray.direction), stdIntersect);
+			for (unsigned int j = 0; j < m_objects[i].tris.size(); ++j)
+			{
+				Intersect intersect = m_objects[i].tris[j].intersect(Ray(_ray.origin, _ray.direction), _limits);
 
-			if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < closestIntersect)
-			{
-				closestIntersect = intersect.t1;
-				closestRenderable = std::make_shared<Object>(m_objects[i]);
-				_normal = intersect.normal;
-			}
-			if (intersect.t2 > _limits.t1 && intersect.t2 < _limits.t2 && intersect.t2 < closestIntersect)
-			{
-				closestIntersect = intersect.t2;
-				closestRenderable = std::make_shared<Object>(m_objects[i]);
-				_normal = intersect.normal;
+				if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < closestIntersect)
+				{
+					closestIntersect = intersect.t1;
+					closestRenderable = std::make_shared<Object>(m_objects[i]);
+					_normal = intersect.normal;
+				}
+				if (intersect.t2 > _limits.t1 && intersect.t2 < _limits.t2 && intersect.t2 < closestIntersect)
+				{
+					closestIntersect = intersect.t2;
+					closestRenderable = std::make_shared<Object>(m_objects[i]);
+					_normal = intersect.normal;
+				}
 			}
 		}
 
+
+
 		_renderable = closestRenderable;
 		_closestIntersection = closestIntersect;
+		
 	}
 
 	std::vector<RenderQuad> RayTracer::calculateRenderQuads()
@@ -199,15 +204,17 @@ namespace Batoidea
 				intersectMax = INFINITY;
 			}
 
-
+			L = glm::normalize(L);
+			
 			// shadow check
 			float closestShadowIntersect = INFINITY;
 			std::shared_ptr<Object> closestShadowRenderable;
 			glm::vec3 norm;
-			calculateClosestIntersection(closestShadowRenderable, closestShadowIntersect, norm, Ray(_position, L), Intersect(0.1f, intersectMax, norm));
+			
+			calculateClosestIntersection(closestShadowRenderable, closestShadowIntersect, norm, Ray(_position, L), Intersect(0.001f, INFINITY, norm));
 			if (closestShadowRenderable != NULL)
 				continue;
-
+			
 
 			// diffuse
 			float n_dot_l = glm::dot(_normal, L);

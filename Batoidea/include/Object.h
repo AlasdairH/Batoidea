@@ -16,15 +16,13 @@ namespace Batoidea
 	public:
 		Object() { }
 
-		void addTriange(const Triangle &_tri) { m_tris.push_back(_tri); }
-
-		Intersect intersect(const Ray &_ray, Intersect &_limits);
+		void addTriange(const Triangle &_tri) { tris.push_back(_tri); }
 
 		inline Material getMaterial() { return m_material; }
 		inline void setMaterial(Material _material) { m_material = _material; }
 
+		std::vector<Triangle> tris;
 	protected:
-		std::vector<Triangle> m_tris;
 
 		Material m_material;
 	};

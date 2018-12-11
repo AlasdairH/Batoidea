@@ -3,6 +3,7 @@
 // cstdlib
 
 // external libs
+#include "GLM/gtx/transform.hpp"
 
 // program
 #include "PCH.h"
@@ -37,8 +38,6 @@ namespace Batoidea
 		glm::vec3 m_U;
 		glm::vec3 m_V;
 
-		glm::vec3 m_viewPlaneBottomLeftPoint;
-		glm::vec3 m_xIncVector;
-		glm::vec3 m_yIncVector;
+		glm::mat4 m_cameraToWorld;
 	};
 }

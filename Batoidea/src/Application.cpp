@@ -50,21 +50,33 @@ int main()
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Object> renderables;
-	Material material;
-	material.shine = 1000.0f;
-	material.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-	material.reflectiveness = 0.0f;
+	Material materialWhite;
+	materialWhite.shine = 1000.0f;
+	materialWhite.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	materialWhite.reflectiveness = 0.5f;	
+	
+	Material materialRed;
+	materialRed.shine = 1000.0f;
+	materialRed.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
+	materialRed.reflectiveness = 0.0f;
 
 
 	Object object;
-	std::vector<Triangle> triangles = ObjectLoader::loadObject("models/deer.obj");
-	for (unsigned int i = 0; i < triangles.size(); ++i)
-	{
-		object.addTriange(triangles[i]);
-	}
-	object.setMaterial(material);
+	Object groundPlane;
+	std::vector<Triangle> objectTriangles = ObjectLoader::loadObject("models/deer.obj");
+	std::vector<Triangle> groundPlaneTriangles = ObjectLoader::loadObject("models/plane.obj");
+	
+	object.tris = objectTriangles;
+	groundPlane.tris = groundPlaneTriangles;
+
+	//material.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
+	
+	object.setMaterial(materialRed);
+	groundPlane.setMaterial(materialWhite);
 
 	renderables.push_back(object);
+	renderables.push_back(groundPlane);
+
 
 	std::vector<Light> lights;
 

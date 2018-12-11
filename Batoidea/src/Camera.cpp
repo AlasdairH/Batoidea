@@ -20,6 +20,8 @@ namespace Batoidea
 		m_fieldOfView = glm::radians(50.0f);
 		m_aspectRatio = (float)m_viewportResolutionWidth / (float)m_viewportResolutionHeight;
 		m_halfFieldOfView = m_fieldOfView / 2.0f;
+
+		m_cameraToWorld = glm::perspective(glm::radians(m_fieldOfView), m_aspectRatio, 0.1f, 100.0f);
 	}
 
 	Ray Camera::getRay(const int _x, const int _y)
