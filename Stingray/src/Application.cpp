@@ -15,6 +15,8 @@
 #include "Timer.h"
 #include "RayTracer.h"
 
+#define RAND_FLOAT static_cast <float> (rand()) / static_cast <float> (RAND_MAX)
+
 #undef main
 
 // bat oi de a
@@ -62,6 +64,8 @@ int main()
 
 
 	RayTracerSettings rtSettings;
+	rtSettings.threads = std::thread::hardware_concurrency();
+	rtSettings.threads = 8;
 	RayTracer raytracer(rtSettings);
 
 	std::vector<Sphere> renderables;
@@ -69,32 +73,32 @@ int main()
 	material.shine = 1000.0f;
 
 	float distance = 5.0f;
-	float radius = 0.8f;
+	float radius = 0.3f;
 
-	material.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
-
-	renderables.push_back(Sphere(glm::vec3(-2, 0, distance), radius, material));
-	
-	material.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	renderables.push_back(Sphere(glm::vec3(0, 0, distance), radius, material));
-	
-	material.colourDiffuse = glm::vec3(0.0f, 0.0f, 1.0f);
-
-	renderables.push_back(Sphere(glm::vec3(2, 0, distance), radius, material));
+	for (int x = -3; x <= 3; ++x)
+	{
+		for (int y = -3; y <= 3; ++y)
+		{
+			for (int z = 8; z <= 14; ++z)
+			{
+				material.colourDiffuse = glm::vec3(RAND_FLOAT, RAND_FLOAT, RAND_FLOAT);
+				renderables.push_back(Sphere(glm::vec3(x, y, z), radius, material));
+			}
+		}
+	}
 
 	std::vector<Light> lights;
 
 	Light light1;
 	light1.type = LIGHT_POINT;
-	light1.direction = glm::vec3(-4, 2, 0);
+	light1.direction = glm::vec3(-4, 0, 0);
 	light1.position = light1.direction;
 	light1.intensity = 0.5f;
 	lights.push_back(light1);
 
 	Light light2;
 	light2.type = LIGHT_POINT;
-	light2.direction = glm::vec3(4, 2, 0);
+	light2.direction = glm::vec3(4, 0, 0);
 	light2.position = light2.direction;
 	light2.intensity = 0.5f;
 	lights.push_back(light2);
@@ -119,7 +123,18 @@ int main()
 				switch (incomingEvent.key.keysym.sym)
 				{
 				case SDLK_RETURN:
-					raytracer.render(renderables, lights, *window->getSurface());
+					if (raytracer.isRenderComplete())
+					{
+						SDL_FillRect(window->getSurface(), NULL, 0x000000);
+						raytracer.render(renderables, lights, *window->getSurface());
+					}
+					else
+					{
+						LOG_ERROR("Unable to start ray trace, renderer is busy. Consider stopping the current render to start a new one.");
+					}
+					break;				
+				case SDLK_BACKSPACE:
+					raytracer.stop();
 					break;
 				}
 			}

@@ -6,7 +6,6 @@ namespace Batoidea
 	{
 		m_settings = _settings;
 
-		//m_threadPool = std::make_shared<Threads::ThreadPool>(std::thread::hardware_concurrency());
 		m_threadPool = std::make_shared<Threads::ThreadPool>(m_settings.threads);
 		
 		m_camera = std::make_shared<Camera>(m_settings.renderResolutionWidth, m_settings.renderResolutionHeight, glm::vec3(0, 0, 0));
@@ -49,7 +48,6 @@ namespace Batoidea
 			m_timer.saveDuration();
 			return true;
 		}
-
 		return false;
 	}
 

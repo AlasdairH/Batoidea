@@ -51,13 +51,11 @@ namespace Batoidea
 		*/
 		bool isRenderComplete();
 
-		/** @brief Returns the time of the last render if there was one
-		*	@return The list of RenderQuads for the viewport
+		/** @brief Stops any active render 
 		*
-		*	Takes the viewport and divides it up into smaller segments called RenderQuads which each represent a segment of the final render. These
-		*	RenderQuads are then added to the threadpool to be ray traced.
+		*	Checks for an active render, if there is one then stop it
 		*/
-		float getRenderTime() { return m_timer.getSavedDuration(); }
+		inline void stop() { m_threadPool->cancelQueue(); }
 
 	protected:
 		// TODO: Doxygen

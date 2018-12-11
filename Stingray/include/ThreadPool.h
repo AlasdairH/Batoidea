@@ -106,9 +106,19 @@ namespace Threads
 			}
 		}
 
-		void tsPrint(std::string _string);
+		void cancelQueue();
+
+
 
 	protected:
+		/** @brief Prints to the console in the thread safe manner
+		*	@param _string The string to print
+		*
+		*	Prints to the console in a thread safe mannor to prevent any overlapping.
+		*	(ts = threadsafe)
+		*/
+		void tsPrint(std::string _string);
+
 		/** @brief Starts the thread pool. Called by constructor.
 		*	@param _numThreads The number of threads to start the pool with
 		*

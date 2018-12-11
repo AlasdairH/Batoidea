@@ -20,6 +20,16 @@ namespace Threads
 		stop();
 	}
 
+	void ThreadPool::cancelQueue()
+	{
+		// scope for mutex lock
+		{
+			std::lock_guard<std::mutex> lock(m_queueProtectionMutex);
+			// bit of a miss-feature, no clear... this is the best I can come up with
+			std::queue<Task>().swap(m_tasks);
+		}
+	}
+
 	void ThreadPool::tsPrint(std::string _string)
 	{
 		{
