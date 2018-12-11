@@ -82,11 +82,13 @@ namespace Batoidea
 		/** @brief Per pixel trace method
 		*	@param _ray The ray to trace through the scene
 		*	@param _depth The reflection depth (if needed)
+		*	@param _limits The near and far limits of the ray trace
 		*	@return The colour (normalised) at the ray end
 		*
 		*	The per pixel render method which traces a ray through the scene.
 		*/
-		glm::vec3 trace(const Ray &_ray, int _depth);
+		glm::vec3 trace(const Ray &_ray, int _depth, Intersect _limits);
+
 		/** @brief Lighting Calculation 
 		*	@param _object The object that's having it's lighting computed
 		*	@param _normal The normal of the point to calculate lighting on

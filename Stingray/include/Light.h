@@ -26,6 +26,6 @@ namespace Batoidea
 
 		glm::vec3 position;
 		glm::vec3 direction;
-		float intensity;
+		float intensity = 1.0f;
 	};
 }
