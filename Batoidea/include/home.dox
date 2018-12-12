@@ -5,6 +5,8 @@
 Welcome to the documentation of Batoidea, a ray tracer written in C++ for the Games Programming Level 6 Graphics and Computational Programming
 assignment.
 
+\image html MainPageRender.bmp
+
 \section sec_features Features
 
 	- Rendering of multiple polygon meshes (supports .obj, triangulated)
