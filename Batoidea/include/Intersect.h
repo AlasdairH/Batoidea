@@ -34,16 +34,18 @@ namespace Batoidea
 		*
 		*	Creates an intersection with the provided arguments
 		*/
-		Intersect(float _t1, float _t2, const glm::vec3 &_normal = glm::vec3(0))
+		Intersect(float _t1, float _t2, const glm::vec3 &_normal = glm::vec3(0), const glm::vec2 &_texture = glm::vec2(0))
 		{
 			t1 = _t1;
 			t2 = _t2;
 			normal = _normal;
+			texCoord = _texture;
 		}
 
-		float t1;			/**< The closest point of intersection */
-		float t2;			/**< The farthest point of intersection */
+		float t1;				/**< The closest point of intersection */
+		float t2;				/**< The farthest point of intersection */
 
-		glm::vec3 normal;	/**< The normal at the point of intersection */
+		glm::vec3 normal;		/**< The normal at the point of intersection */
+		glm::vec2 texCoord;		/**< The texture corrdinate at the point of intersection */
 	};
 }

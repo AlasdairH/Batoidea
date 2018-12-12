@@ -45,10 +45,16 @@ namespace Batoidea
 		const glm::vec3 &n1 = normals[1];
 		const glm::vec3 &n2 = normals[2];
 		glm::vec3 interpNormal = (1 - u - v) * n0 + u * n1 + v * n2;
-		interpNormal = glm::normalize(interpNormal);
+		interpNormal = glm::normalize(interpNormal);		
+		
+		// interpolate texture
+		const glm::vec2 &t0 = texture[0];
+		const glm::vec2 &t1 = texture[1];
+		const glm::vec2 &t2 = texture[2];
+		glm::vec2 interpTexture = (1 - u - v) * t0 + u * t1 + v * t2;
 
 		t = glm::dot(v0v2, qvec) * invDet;
 
-		return Intersect(t, t, interpNormal); // this ray hits the triangle
+		return Intersect(t, t, interpNormal, interpTexture); // this ray hits the triangle
 	}
 }

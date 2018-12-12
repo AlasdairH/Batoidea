@@ -47,5 +47,6 @@ namespace Batoidea
 
 		glm::vec3 verts[3];		/**< The 3 vertices of the triangle */
 		glm::vec3 normals[3];	/**< The 3 normals for each vertex of the triangle */
+		glm::vec2 texture[3];	/**< The 3 normals for each vertex of the triangle */
 	};
 }

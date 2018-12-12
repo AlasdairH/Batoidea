@@ -10,7 +10,7 @@
 #define LOG_ERROR(_text) std::cout << "ERROR: " << _text << std::endl
 #endif
 
-#define SCREEN_WIDTH 1280	
-#define SCREEN_HEIGHT 720
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720 
 
 #define RAND_FLOAT static_cast <float> (rand()) / static_cast <float> (RAND_MAX)

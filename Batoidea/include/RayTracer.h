@@ -72,11 +72,12 @@ namespace Batoidea
 		*	@param _normal The normal at the intersection
 		*	@param _ray The ray to cast to find any intersections
 		*	@param _limits The limits to find any intersection inbetween
+		*	@return The calculated intersection
 		*
 		*	Takes the renderbale, intersection distance and normal by reference to return multiple values. Tests the scene for intersections
 		*	with the ray and returns the results.
 		*/
-		void calculateClosestIntersection(std::shared_ptr<Object> &_renderable, float &_closestIntersection, glm::vec3 &_normal, Ray _ray, Intersect _limits);
+		Intersect calculateClosestIntersection(std::shared_ptr<Object> &_renderable, Ray _ray, Intersect _limits);
 
 		/** @brief Calculates the render quads
 		*	@return The list of RenderQuads for the viewport

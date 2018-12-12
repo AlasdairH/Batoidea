@@ -22,8 +22,8 @@ namespace Batoidea
 
 		int threads = std::thread::hardware_concurrency();				/**< The number of threads to use, by default is set to the number of available threads on the system */
 
-		int renderQuadResolutionWidth = 20;								/**< The number of horizontal segments divide up the render by. The total number of segments should not be less than the number of available threads. */
-		int renderQuadResolutionHeight = 20;							/**< The number of vertical segments divide up the render by. The total number of segments should not be less than the number of available threads.*/
+		int renderQuadResolutionWidth = 10;								/**< The number of horizontal segments divide up the render by. The total number of segments should not be less than the number of available threads. */
+		int renderQuadResolutionHeight = 10;							/**< The number of vertical segments divide up the render by. The total number of segments should not be less than the number of available threads.*/
 
 		float fov = 30.0f;												/**< The field of view of the camera */
 

@@ -6,6 +6,7 @@
 
 // program
 #include "PCH.h"
+#include "Texture.h"
 
 namespace Batoidea
 {
@@ -17,10 +18,12 @@ namespace Batoidea
 	struct Material
 	{
 	public:
-		glm::vec3 colourDiffuse	 = glm::vec3(1.0f, 1.0f, 1.0f);		/**< The diffuse colour */
+		Material() { diffuse = std::make_shared<Texture>(512, 512); }
 
-		float shine				= 1.0f;								/**< The shine for the specular calculations */
-		float reflectiveness	= 0.0f;								/**< The reflectivity (Range: [0.0:1.0]) */
+		std::shared_ptr<Texture>	diffuse;						/**< The diffuse colour */
+
+		float						shine				= 1.0f;		/**< The shine for the specular calculations */
+		float						reflectiveness		= 0.0f;		/**< The reflectivity (Range: [0.0:1.0]) */
 
 	};
 }

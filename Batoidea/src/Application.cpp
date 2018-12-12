@@ -5,6 +5,7 @@
 
 // external libs
 #include "SDL/SDL.h"
+#include "SDL_Image/SDL_image.h"
 #include "GLM/common.hpp"
 
 // program
@@ -35,6 +36,15 @@ int main()
 	{
 		// something went wrong, exit program
 		LOG_ERROR("Unable to Initialise SDL");
+		//return 0;
+	}
+
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags) & imgFlags))
+	{
+		// something went wrong, exit program
+		LOG_ERROR("Unable to Initialise SDL_Image: " << IMG_GetError());
+		//return 0;
 	}
 
 	LOG_MESSAGE("SDL Initialised");
@@ -43,43 +53,30 @@ int main()
 
 
 	RayTracerSettings rtSettings;
-	//rtSettings.threads = 1;
+	//rtSettings.threads = 2;
 	RayTracer raytracer(rtSettings);
 
 	Material materialWhite;
 	materialWhite.shine = 1000.0f;
-	materialWhite.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	materialWhite.diffuse->setColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	materialWhite.reflectiveness = 0.5f;		
 	
-	Material materialShine;
-	materialShine.shine = 1000.0f;
-	materialShine.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-	materialShine.reflectiveness = 0.8f;
-	
-	Material materialRed;
-	materialRed.shine = 1000.0f;
-	materialRed.colourDiffuse = glm::vec3(1.0f, 0.0f, 0.0f);
-	materialRed.reflectiveness = 0.1f;
+	Material materialMK2;
+	materialMK2.shine = 500.0f;
+	materialMK2.diffuse->load("resources/textures/MK2/base.png");
+	materialMK2.reflectiveness = 0.1f;
 
-	Material materialGreen;
-	materialGreen.shine = 1000.0f;
-	materialGreen.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
-	materialGreen.reflectiveness = 0.1f;
-
-	Object object1 = ObjectLoader::loadObject("models/deer1.obj");
-	Object object2 = ObjectLoader::loadObject("models/deer2.obj");
-	Object object3 = ObjectLoader::loadObject("models/sphere.obj");
-	Object groundPlane = ObjectLoader::loadObject("models/plane.obj");
+	Object object1 = ObjectLoader::loadObject("resources/models/mk2.obj");
+	Object object2 = ObjectLoader::loadObject("resources/models/mk2-1.obj");
+	Object groundPlane = ObjectLoader::loadObject("resources/models/plane.obj");
 	
-	object1.setMaterial(materialRed);
-	object2.setMaterial(materialGreen);
-	object3.setMaterial(materialShine);
+	object1.setMaterial(materialMK2);
+	object2.setMaterial(materialMK2);
 	groundPlane.setMaterial(materialWhite);
 
 	std::vector<Object> renderables;
 	renderables.push_back(object1);
 	renderables.push_back(object2);
-	renderables.push_back(object3);
 	renderables.push_back(groundPlane);
 
 
@@ -87,14 +84,14 @@ int main()
 
 	Light light1;
 	light1.type = LIGHT_POINT;
-	light1.direction = glm::vec3(0, 4, 6);
+	light1.direction = glm::vec3(0, 4, 3);
 	light1.position = light1.direction;
-	light1.intensity = 1.0f;
+	light1.intensity = 0.5f;
 	lights.push_back(light1);
 
 	Light light2;
 	light2.type = LIGHT_POINT;
-	light2.direction = glm::vec3(4, 2, 0);
+	light2.direction = glm::vec3(0, 0, 0);
 	light2.position = light2.direction;
 	light2.intensity = 0.5f;
 	lights.push_back(light2);

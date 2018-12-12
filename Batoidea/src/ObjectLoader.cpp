@@ -8,6 +8,7 @@ namespace Batoidea
 		std::vector<Triangle> tris;
 		std::vector<glm::vec3> verts;
 		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> tex;
 
 		BoundingBox boundingBox;
 
@@ -80,6 +81,20 @@ namespace Batoidea
 				++parsedLines;
 			}
 
+			// texture coord line
+			if (line.find("vt ") != std::string::npos)
+			{
+				size_t firstSpaceIndex = line.find(" ", 0);
+				size_t secondSpaceIndex = line.find(" ", firstSpaceIndex + 1);
+				size_t eolIndex = line.find("\n", i);
+
+				std::string xVal = line.substr(firstSpaceIndex + 1, secondSpaceIndex - firstSpaceIndex - 1);
+				std::string yVal = line.substr(secondSpaceIndex + 1, eolIndex - secondSpaceIndex - 1);
+
+				tex.push_back(glm::vec2(std::stof(xVal), std::stof(yVal)));
+				++parsedLines;
+			}
+
 			// face line
 			if (line.find("f ") != std::string::npos)
 			{
@@ -90,6 +105,7 @@ namespace Batoidea
 
 				// create a vector for the extracted indices
 				std::vector<int> vIncides;
+				std::vector<int> vtIncides;
 				std::vector<int> vnIncides;
 				// for each split in the face components
 				for (unsigned int j = 0; j < splitLine.size(); ++j)
@@ -98,7 +114,8 @@ namespace Batoidea
 					std::vector<std::string> splitBlock = ObjectLoader::split(splitLine[j], '/');
 					// get the vertex index
 					vIncides.push_back(std::stoi(splitBlock[0]));
-					// IGNORE TEXTURE (for now)
+					// get the vertex texture index
+					vtIncides.push_back(std::stoi(splitBlock[1]));
 					// get the vertex normal index
 					vnIncides.push_back(std::stoi(splitBlock[2]));
 				}
@@ -109,6 +126,7 @@ namespace Batoidea
 				{
 					// grab the split data for the current vertex and store it together 
 					tri.verts[j] = glm::vec3(verts[vIncides[j] - 1]);
+					tri.texture[j] = glm::vec2(tex[vtIncides[j] - 1]);
 					tri.normals[j] = glm::vec3(normals[vnIncides[j] - 1]);
 				}
 				tris.push_back(tri);

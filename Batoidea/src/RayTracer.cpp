@@ -14,6 +14,9 @@ namespace Batoidea
 	SDL_Surface RayTracer::render(std::vector<Object> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
 		m_statistics.reset();
+		m_statistics.settings = m_settings;
+
+
 		LOG_MESSAGE("Calculating Render Quads");
 		std::vector<RenderQuad> renderQuads = calculateRenderQuads();
 
@@ -44,12 +47,10 @@ namespace Batoidea
 
 	glm::vec3 RayTracer::trace(const Ray &_ray, int _depth, Intersect _limits)
 	{
-		float closestIntersect = INFINITY;
 		std::shared_ptr<Object> closestRenderable;
-		glm::vec3 normal;
 		// grab the closest intersection for the ray
-		calculateClosestIntersection(closestRenderable, closestIntersect, normal, _ray, _limits);
-		normal = glm::normalize(normal);
+		Intersect intersect = calculateClosestIntersection(closestRenderable, _ray, _limits);
+		intersect.normal = glm::normalize(intersect.normal);
 
 		// the background colour
 		glm::vec3 localColour = m_settings.backgroundColour;
@@ -62,10 +63,12 @@ namespace Batoidea
 		// if we got to here then there was an intersection
 		++m_statistics.numIntersections;
 
-		glm::vec3 position = _ray.point_at(closestIntersect);
+		glm::vec3 position = _ray.point_at(intersect.t1);
 
-		localColour = closestRenderable->getMaterial().colourDiffuse;
-		localColour *= computeLighting(closestRenderable, normal, position, -_ray.direction);
+		Material rennderableMaterial = closestRenderable->getMaterial();
+
+		localColour = rennderableMaterial.diffuse->sample(intersect.texCoord.x * (rennderableMaterial.diffuse->getWidth() - 1), rennderableMaterial.diffuse->getHeight() - (intersect.texCoord.y * (rennderableMaterial.diffuse->getHeight() - 1)));
+		localColour *= computeLighting(closestRenderable, intersect.normal, position, -_ray.direction);
 
 		// handle reflection
 		float reflectivity = closestRenderable->getMaterial().reflectiveness;
@@ -74,7 +77,7 @@ namespace Batoidea
 			return localColour;
 		}
 
-		glm::vec3 reflection = reflect(-_ray.direction, normal);
+		glm::vec3 reflection = reflect(-_ray.direction, intersect.normal);
 		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.001f, INFINITY, glm::vec3(0)));
 
 		localColour = localColour * (1 - reflectivity) + reflectedColour * reflectivity;
@@ -82,8 +85,9 @@ namespace Batoidea
 		return localColour;
 	}
 
-	void RayTracer::calculateClosestIntersection(std::shared_ptr<Object> &_renderable, float &_closestIntersection, glm::vec3 &_normal, Ray _ray, Intersect _limits)
+	Intersect RayTracer::calculateClosestIntersection(std::shared_ptr<Object> &_renderable, Ray _ray, Intersect _limits)
 	{
+		Intersect rtnIntersect;
 		float closestIntersect = INFINITY;
 		std::shared_ptr<Object> closestRenderable = nullptr;
 		
@@ -104,24 +108,28 @@ namespace Batoidea
 				Intersect intersect = m_objects[i].tris[j].intersect(Ray(_ray.origin, _ray.direction), _limits);
 				++m_statistics.numIntersectionTests;
 
-				if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < closestIntersect)
+				if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < rtnIntersect.t1)
 				{
-					closestIntersect = intersect.t1;
+					rtnIntersect.t1 = intersect.t1;
+					rtnIntersect.t2 = intersect.t1;
 					closestRenderable = std::make_shared<Object>(m_objects[i]);
-					_normal = intersect.normal;
+					rtnIntersect.normal = intersect.normal;
+					rtnIntersect.texCoord = intersect.texCoord;
 				}
-				if (intersect.t2 > _limits.t1 && intersect.t2 < _limits.t2 && intersect.t2 < closestIntersect)
+				if (intersect.t2 > _limits.t1 && intersect.t2 < _limits.t2 && intersect.t2 < rtnIntersect.t1)
 				{
-					closestIntersect = intersect.t2;
+					rtnIntersect.t1 = intersect.t2;
+					rtnIntersect.t2 = intersect.t2;
 					closestRenderable = std::make_shared<Object>(m_objects[i]);
-					_normal = intersect.normal;
+					rtnIntersect.normal = intersect.normal;
+					rtnIntersect.texCoord = intersect.texCoord;
 				}
 			}
 		}
 
 		_renderable = closestRenderable;
-		_closestIntersection = closestIntersect;
-		
+
+		return rtnIntersect;
 	}
 
 	std::vector<RenderQuad> RayTracer::calculateRenderQuads()
@@ -178,6 +186,7 @@ namespace Batoidea
 				{
 					float sampleVarianceX = 0;
 					float sampleVarianceY = 0;
+					// if there is more than 1 pixel sample then add some variance to the sample location
 					if (m_settings.samplesPerPixel > 1)
 					{
 						sampleVarianceX = RAND_FLOAT;
@@ -220,12 +229,11 @@ namespace Batoidea
 			L = glm::normalize(L);
 			
 			// shadow check
-			float closestShadowIntersect = INFINITY;
 			std::shared_ptr<Object> closestShadowRenderable;
 			glm::vec3 norm;
 			
 
-			calculateClosestIntersection(closestShadowRenderable, closestShadowIntersect, norm, Ray(_position, L), Intersect(0.001f, INFINITY, norm));
+			Intersect shadowIntersect = calculateClosestIntersection(closestShadowRenderable, Ray(_position, L), Intersect(0.001f, INFINITY));
 			++m_statistics.numShadowRays;
 			if (closestShadowRenderable != NULL)
 				continue;

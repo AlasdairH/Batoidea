@@ -10,8 +10,6 @@
 // program
 #include "Logger.h"
 
-// TODO: Doxygen
-
 namespace Batoidea
 {
 	/*! @class Timer

@@ -6,6 +6,7 @@
 
 // program
 #include "PCH.h"
+#include "RayTracerSettings.h"
 
 namespace Batoidea
 {
@@ -14,8 +15,10 @@ namespace Batoidea
 	*
 	*	The statistics are updated by the renderer as it traces the scene and can be used for profiling.
 	*/
-	struct Statistics
+	class Statistics
 	{
+	public:
+		friend class RayTracer;
 		/** @brief Statistics Constructor
 		*
 		*	Creates and resets a set of stats
@@ -26,28 +29,22 @@ namespace Batoidea
 		*
 		*	Resets all stats to their default values
 		*/
-		void reset()
-		{
-			numTriangles = 0;
-			numIntersectionTests = 0;
-			numIntersections = 0;
-		}
+		void reset();
 
 		/** @brief Prints out the stats to the console
 		*
 		*	Prints out the stats to the console
 		*/
-		void print()
-		{
-			LOG_MESSAGE("Number of Triangles: " << numTriangles);
-			LOG_MESSAGE("Number of Intersection Tests: " << numIntersectionTests);
-			LOG_MESSAGE("Number of Intersections: " << numIntersections);
-			LOG_MESSAGE("Shadow Rays Cast: " << numShadowRays);
-		}
+		void print();
 
+		void outputToCSV();
+
+	protected:
 		int numTriangles;			/**< The number of triangles in the scene */
 		int	numIntersectionTests;	/**< The number of intersection tests performed */
 		int numIntersections;		/**< The number of intersections that tested true */
 		int numShadowRays;			/**< The number of shadow rays caculated */
+
+		RayTracerSettings settings;	/**< The settings used to redner the scene */
 	};
 }

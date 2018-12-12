@@ -2,6 +2,7 @@
 
 // cstdlib
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <memory>
 #include <algorithm>
@@ -9,6 +10,7 @@
 
 // external libs
 #include "SDL\SDL.h"
+#include "SDL_Image/SDL_image.h"
 #include "GLM/glm.hpp"
 
 // program
