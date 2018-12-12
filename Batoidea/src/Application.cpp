@@ -66,7 +66,7 @@ int main()
 	materialGreen.colourDiffuse = glm::vec3(0.0f, 1.0f, 0.0f);
 	materialGreen.reflectiveness = 0.1f;
 
-	Object object1 = ObjectLoader::loadObject("models/deer1.obj");
+	Object object1 = ObjectLoader::loadObject("models/batoidea.obj");
 	Object object2 = ObjectLoader::loadObject("models/deer2.obj");
 	Object object3 = ObjectLoader::loadObject("models/sphere.obj");
 	Object groundPlane = ObjectLoader::loadObject("models/plane.obj");
@@ -78,7 +78,7 @@ int main()
 
 	std::vector<Object> renderables;
 	renderables.push_back(object1);
-	renderables.push_back(object2);
+	//renderables.push_back(object2);
 	renderables.push_back(object3);
 	renderables.push_back(groundPlane);
 
