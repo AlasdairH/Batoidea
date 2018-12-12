@@ -66,7 +66,16 @@ namespace Batoidea
 		inline Statistics getRenderStatistics() { return m_statistics; }
 
 	protected:
-		// TODO: Doxygen
+		/** @brief Returns the closest intersection for a given ray
+		*	@param _renderable The closest renderable object
+		*	@param _closestIntersection The distance of the closest intersection
+		*	@param _normal The normal at the intersection
+		*	@param _ray The ray to cast to find any intersections
+		*	@param _limits The limits to find any intersection inbetween
+		*
+		*	Takes the renderbale, intersection distance and normal by reference to return multiple values. Tests the scene for intersections
+		*	with the ray and returns the results.
+		*/
 		void calculateClosestIntersection(std::shared_ptr<Object> &_renderable, float &_closestIntersection, glm::vec3 &_normal, Ray _ray, Intersect _limits);
 
 		/** @brief Calculates the render quads
@@ -96,17 +105,23 @@ namespace Batoidea
 		glm::vec3 trace(const Ray &_ray, int _depth, Intersect _limits);
 
 		/** @brief Lighting Calculation 
-		*	@param _object The object that's having it's lighting computed
+		*	@param _renderable The object that's having it's lighting computed
 		*	@param _normal The normal of the point to calculate lighting on
 		*	@param _position The position in space of which to calculate the lighting of
-		*	@param _pos_rayToCamera a vector from the object to the camaera ( - _ray.direction )
+		*	@param _rayToCamera a vector from the object to the camaera ( - _ray.direction )
 		*	@return The light intensity at the position
 		*
 		*	Computes the lighting for a given position and normal
 		*/
 		float computeLighting(std::shared_ptr<Object> _renderable, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera);
 
-		// TODO: Doxygen
+		/** @brief Reflects a ray by a normal
+		*	@param _rayDir The direction of the ray to reflect
+		*	@param _normal The normal to relfect the ray by
+		*	@return The reflected direction
+		*
+		*	Takes a ray direction and reflects it based on the given normal.
+		*/
 		glm::vec3 reflect(glm::vec3 _rayDir, glm::vec3 _normal) 
 		{
 			return 2.0f * _normal * glm::dot(_normal, _rayDir) - _rayDir;

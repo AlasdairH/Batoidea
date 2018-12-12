@@ -1,0 +1,19 @@
+/*! \mainpage Games Programming Level 6 - Graphics and Computational Programming (Multi-Threaded Ray Tracer)
+
+\section sec_intro Introduction
+
+Welcome to the documentation of Batoidea, a ray tracer written in C++ for the Games Programming Level 6 Graphics and Computational Programming
+assignment.
+
+\section sec_features Features
+
+	- Rendering of multiple polygon meshes (supports .obj, triangulated)
+	- Multi-threaded
+	- Shadows
+	- Reflection
+
+\section sec_use Use
+
+
+ 
+*/

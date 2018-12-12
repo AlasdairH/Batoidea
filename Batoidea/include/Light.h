@@ -39,7 +39,7 @@ namespace Batoidea
 			intensity = _int;
 		}
 
-		LightType type = LIGHT_POINT;
+		LightType type = LIGHT_POINT;						/**< The light type */
 
 		glm::vec3 position;									/**< The position of the light (default 0, 0, 0) */
 		glm::vec3 direction		= glm::vec3(0, -1, 0);		/**< The direction of the light (if directional) */

@@ -25,7 +25,7 @@ namespace Threads
 	class ThreadPool
 	{
 	public:
-		using Task = std::function<void()>;
+		using Task = std::function<void()>;		/**< Set Task to be a std::function */
 
 		/** @brief ThreadPool Constructor
 		*

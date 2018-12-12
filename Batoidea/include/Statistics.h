@@ -9,6 +9,11 @@
 
 namespace Batoidea
 {
+	/*! @class Statistics
+	*	@brief Holds statistics for a ray trace
+	*
+	*	The statistics are updated by the renderer as it traces the scene and can be used for profiling.
+	*/
 	struct Statistics
 	{
 		/** @brief Statistics Constructor
