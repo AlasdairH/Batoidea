@@ -13,6 +13,6 @@ var searchData=
   ['renderquadtopixels',['renderQuadToPixels',['../class_batoidea_1_1_ray_tracer.html#a6e9c76710a8c739fffc4dd03b575255a',1,'Batoidea::RayTracer']]],
   ['renderresolutionheight',['renderResolutionHeight',['../struct_batoidea_1_1_ray_tracer_settings.html#a9639e40ae5f9c7ddd59e2d6938999ab5',1,'Batoidea::RayTracerSettings']]],
   ['renderresolutionwidth',['renderResolutionWidth',['../struct_batoidea_1_1_ray_tracer_settings.html#a770fc4d133a0f372f46837dd0681b151',1,'Batoidea::RayTracerSettings']]],
-  ['reset',['reset',['../struct_batoidea_1_1_statistics.html#af538dae73f0052a5c6dffaa3560e4c6d',1,'Batoidea::Statistics::reset()'],['../class_batoidea_1_1_timer.html#adc57463e57724c2d9ed5ad6f23fd7bf5',1,'Batoidea::Timer::reset()']]],
+  ['reset',['reset',['../class_batoidea_1_1_statistics.html#af538dae73f0052a5c6dffaa3560e4c6d',1,'Batoidea::Statistics::reset()'],['../class_batoidea_1_1_timer.html#adc57463e57724c2d9ed5ad6f23fd7bf5',1,'Batoidea::Timer::reset()']]],
   ['resize',['resize',['../class_batoidea_1_1_window.html#ac8c756a4017b72d29527e9d06f7a10a0',1,'Batoidea::Window']]]
 ];

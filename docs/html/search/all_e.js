@@ -3,6 +3,8 @@ var searchData=
   ['t1',['t1',['../struct_batoidea_1_1_intersect.html#a78a42465ea4f3b89c877ce652388516d',1,'Batoidea::Intersect']]],
   ['t2',['t2',['../struct_batoidea_1_1_intersect.html#aa56af8bbfb32603cf77dbed5b9f1def3',1,'Batoidea::Intersect']]],
   ['task',['Task',['../class_threads_1_1_thread_pool.html#a50681966eb09d0d1ff779080ce90d05d',1,'Threads::ThreadPool']]],
+  ['texcoord',['texCoord',['../struct_batoidea_1_1_intersect.html#a057bad947d01b6a197a7764da673bf39',1,'Batoidea::Intersect']]],
+  ['texture',['Texture',['../class_batoidea_1_1_texture.html',1,'Batoidea::Texture'],['../class_batoidea_1_1_texture.html#a185c5a824a6eead97e3dbb6cc5983385',1,'Batoidea::Texture::Texture()'],['../class_batoidea_1_1_triangle.html#a0221b01f47f2621019f9be1edf91e319',1,'Batoidea::Triangle::texture()']]],
   ['threadpool',['ThreadPool',['../class_threads_1_1_thread_pool.html',1,'Threads::ThreadPool'],['../class_threads_1_1_thread_pool.html#ab7103bec1dd8126d57ee4982779ffeea',1,'Threads::ThreadPool::ThreadPool()'],['../class_threads_1_1_thread_pool.html#a16448499821827adc26cb282d7901dee',1,'Threads::ThreadPool::ThreadPool(const int _numThreads)']]],
   ['threads',['threads',['../struct_batoidea_1_1_ray_tracer_settings.html#a543ac2b9df9c33fc6388e05b65133ba1',1,'Batoidea::RayTracerSettings']]],
   ['timer',['Timer',['../class_batoidea_1_1_timer.html',1,'Batoidea::Timer'],['../class_batoidea_1_1_timer.html#addf1b67c0c99953f0ffb46447c7a0a06',1,'Batoidea::Timer::Timer()']]],

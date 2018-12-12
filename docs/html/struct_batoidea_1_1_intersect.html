@@ -82,9 +82,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab17daf6031097e5858a3499588af6de0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_batoidea_1_1_intersect.html#ab17daf6031097e5858a3499588af6de0">Intersect</a> ()</td></tr>
 <tr class="memdesc:ab17daf6031097e5858a3499588af6de0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_batoidea_1_1_intersect.html" title="An intersect with a closest and furthest point as well as a calculated normal for the point of inters...">Intersect</a> Constructor.  <a href="#ab17daf6031097e5858a3499588af6de0">More...</a><br /></td></tr>
 <tr class="separator:ab17daf6031097e5858a3499588af6de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1976d95d23e4531e2de815817a56195"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_batoidea_1_1_intersect.html#ad1976d95d23e4531e2de815817a56195">Intersect</a> (float _t1, float _t2, const glm::vec3 &amp;_normal=glm::vec3(0))</td></tr>
-<tr class="memdesc:ad1976d95d23e4531e2de815817a56195"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_batoidea_1_1_intersect.html" title="An intersect with a closest and furthest point as well as a calculated normal for the point of inters...">Intersect</a> Constructor.  <a href="#ad1976d95d23e4531e2de815817a56195">More...</a><br /></td></tr>
-<tr class="separator:ad1976d95d23e4531e2de815817a56195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c4ad858766e8ea8ab87c3f0dac0a9c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_batoidea_1_1_intersect.html#a7c4ad858766e8ea8ab87c3f0dac0a9c2">Intersect</a> (float _t1, float _t2, const glm::vec3 &amp;_normal=glm::vec3(0), const glm::vec2 &amp;_texture=glm::vec2(0))</td></tr>
+<tr class="memdesc:a7c4ad858766e8ea8ab87c3f0dac0a9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_batoidea_1_1_intersect.html" title="An intersect with a closest and furthest point as well as a calculated normal for the point of inters...">Intersect</a> Constructor.  <a href="#a7c4ad858766e8ea8ab87c3f0dac0a9c2">More...</a><br /></td></tr>
+<tr class="separator:a7c4ad858766e8ea8ab87c3f0dac0a9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -94,6 +94,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aa56af8bbfb32603cf77dbed5b9f1def3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e4f65f74c97d75d7a382c90da8475d"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_batoidea_1_1_intersect.html#ae4e4f65f74c97d75d7a382c90da8475d">normal</a></td></tr>
 <tr class="separator:ae4e4f65f74c97d75d7a382c90da8475d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a057bad947d01b6a197a7764da673bf39"><td class="memItemLeft" align="right" valign="top">glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_batoidea_1_1_intersect.html#a057bad947d01b6a197a7764da673bf39">texCoord</a></td></tr>
+<tr class="separator:a057bad947d01b6a197a7764da673bf39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An intersect with a closest and furthest point as well as a calculated normal for the point of intersection. </p>
@@ -127,8 +129,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad1976d95d23e4531e2de815817a56195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1976d95d23e4531e2de815817a56195">&#9670;&nbsp;</a></span>Intersect() <span class="overload">[2/2]</span></h2>
+<a id="a7c4ad858766e8ea8ab87c3f0dac0a9c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c4ad858766e8ea8ab87c3f0dac0a9c2">&#9670;&nbsp;</a></span>Intersect() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +154,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const glm::vec3 &amp;&#160;</td>
-          <td class="paramname"><em>_normal</em> = <code>glm::vec3(0)</code>&#160;</td>
+          <td class="paramname"><em>_normal</em> = <code>glm::vec3(0)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const glm::vec2 &amp;&#160;</td>
+          <td class="paramname"><em>_texture</em> = <code>glm::vec2(0)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -223,6 +231,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>The farthest point of intersection </p>
+
+</div>
+</div>
+<a id="a057bad947d01b6a197a7764da673bf39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a057bad947d01b6a197a7764da673bf39">&#9670;&nbsp;</a></span>texCoord</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec2 Batoidea::Intersect::texCoord</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The texture corrdinate at the point of intersection </p>
 
 </div>
 </div>

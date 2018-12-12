@@ -21,6 +21,7 @@ var searchData=
   ['m_5fstatistics',['m_statistics',['../class_batoidea_1_1_ray_tracer.html#a43f9b05d4cee7eebeab0621c9e4da588',1,'Batoidea::RayTracer']]],
   ['m_5fstopping',['m_stopping',['../class_threads_1_1_thread_pool.html#a5af319ed7ebbef81f75ff60bc076aa80',1,'Threads::ThreadPool']]],
   ['m_5ftasks',['m_tasks',['../class_threads_1_1_thread_pool.html#a79c4db3c51e1548f949b60b3ba236c9b',1,'Threads::ThreadPool']]],
+  ['m_5ftexture',['m_texture',['../class_batoidea_1_1_texture.html#a21922d98ae855357ef279fef3459b7f4',1,'Batoidea::Texture']]],
   ['m_5fthreadpool',['m_threadPool',['../class_batoidea_1_1_ray_tracer.html#a496c19543267225c8c923eaa6133e957',1,'Batoidea::RayTracer']]],
   ['m_5fthreads',['m_threads',['../class_threads_1_1_thread_pool.html#ae3fad32e751f74bb4e07c56826de025f',1,'Threads::ThreadPool']]],
   ['m_5ftimer',['m_timer',['../class_batoidea_1_1_ray_tracer.html#af2992858ff3f0ba5d020759f60280e00',1,'Batoidea::RayTracer']]],
