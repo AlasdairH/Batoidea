@@ -17,8 +17,6 @@
 #include "ObjectLoader.h"
 #include "Object.h"
 
-#define RAND_FLOAT static_cast <float> (rand()) / static_cast <float> (RAND_MAX)
-
 #undef main
 
 // bat oi de a
@@ -52,7 +50,12 @@ int main()
 	Material materialWhite;
 	materialWhite.shine = 1000.0f;
 	materialWhite.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-	materialWhite.reflectiveness = 0.6f;	
+	materialWhite.reflectiveness = 0.5f;		
+	
+	Material materialShine;
+	materialShine.shine = 1000.0f;
+	materialShine.colourDiffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	materialShine.reflectiveness = 0.8f;
 	
 	Material materialRed;
 	materialRed.shine = 1000.0f;
@@ -66,15 +69,18 @@ int main()
 
 	Object object1 = ObjectLoader::loadObject("models/deer1.obj");
 	Object object2 = ObjectLoader::loadObject("models/deer2.obj");
+	Object object3 = ObjectLoader::loadObject("models/sphere.obj");
 	Object groundPlane = ObjectLoader::loadObject("models/plane.obj");
 	
 	object1.setMaterial(materialRed);
 	object2.setMaterial(materialGreen);
+	object3.setMaterial(materialShine);
 	groundPlane.setMaterial(materialWhite);
 
 	std::vector<Object> renderables;
 	renderables.push_back(object1);
 	renderables.push_back(object2);
+	renderables.push_back(object3);
 	renderables.push_back(groundPlane);
 
 
@@ -156,6 +162,7 @@ int main()
 				lastRenderTime = renderTimer.getDuration();
 				LOG_MESSAGE("Scene rendered in " << lastRenderTime << "s");
 				renderStarted = false;
+				raytracer.getRenderStatistics().print();
 			}
 		}
 

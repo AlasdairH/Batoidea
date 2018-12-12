@@ -24,7 +24,7 @@ namespace Batoidea
 		m_cameraToWorld = glm::perspective(glm::radians(m_fieldOfView), m_aspectRatio, 0.1f, 100.0f);
 	}
 
-	Ray Camera::getRay(const int _x, const int _y)
+	Ray Camera::getRay(const float _x, const float _y)
 	{
 		// normalised device coords, add 0.5 to ensure ray passes through the middle of a pixel
 		float pixelNDCX = (_x + 0.5f) / m_viewportResolutionWidth;

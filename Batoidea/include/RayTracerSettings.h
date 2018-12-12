@@ -22,9 +22,9 @@ namespace Batoidea
 
 		float fov = 30.0f;
 
-		int reflectionRecursionDepth = 1;
+		int reflectionRecursionDepth = 3;
+		int samplesPerPixel = 3;
 
-		float ambientLight = 0.05f;
 		glm::vec3 backgroundColour = glm::vec3(0.1f, 0.1f, 0.1f);
 
 		glm::vec3 cameraPosition;

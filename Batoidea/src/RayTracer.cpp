@@ -13,6 +13,7 @@ namespace Batoidea
 
 	SDL_Surface RayTracer::render(std::vector<Object> &_renderables, std::vector<Light> &_lights, SDL_Surface &_surface)
 	{
+		m_statistics.reset();
 		LOG_MESSAGE("Calculating Render Quads");
 		std::vector<RenderQuad> renderQuads = calculateRenderQuads();
 
@@ -41,14 +42,44 @@ namespace Batoidea
 		return _surface;
 	}
 
-	bool RayTracer::isRenderComplete()
+	glm::vec3 RayTracer::trace(const Ray &_ray, int _depth, Intersect _limits)
 	{
-		if (m_threadPool->isTasksEmpty())
+		float closestIntersect = INFINITY;
+		std::shared_ptr<Object> closestRenderable;
+		glm::vec3 normal;
+		// grab the closest intersection for the ray
+		calculateClosestIntersection(closestRenderable, closestIntersect, normal, _ray, _limits);
+		normal = glm::normalize(normal);
+
+		// the background colour
+		glm::vec3 localColour = m_settings.backgroundColour;
+
+		// if there is no renderable along the ray
+		if (closestRenderable == nullptr)
 		{
-			m_timer.saveDuration();
-			return true;
+			return localColour;
 		}
-		return false;
+		// if we got to here then there was an intersection
+		++m_statistics.numIntersections;
+
+		glm::vec3 position = _ray.point_at(closestIntersect);
+
+		localColour = closestRenderable->getMaterial().colourDiffuse;
+		localColour *= computeLighting(closestRenderable, normal, position, -_ray.direction);
+
+		// handle reflection
+		float reflectivity = closestRenderable->getMaterial().reflectiveness;
+		if (_depth <= 0 || reflectivity <= 0.0f)
+		{
+			return localColour;
+		}
+
+		glm::vec3 reflection = reflect(-_ray.direction, normal);
+		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.001f, INFINITY, glm::vec3(0)));
+
+		localColour = localColour * (1 - reflectivity) + reflectedColour * reflectivity;
+
+		return localColour;
 	}
 
 	void RayTracer::calculateClosestIntersection(std::shared_ptr<Object> &_renderable, float &_closestIntersection, glm::vec3 &_normal, Ray _ray, Intersect _limits)
@@ -60,14 +91,18 @@ namespace Batoidea
 		for (unsigned int i = 0; i < m_objects.size(); ++i)
 		{
 			// test for a bounding intersection before testing all triangles of a mesh
+			++m_statistics.numIntersectionTests;
 			if (!m_objects[i].boundIntersection(_ray))
 			{
 				continue;
 			}
 
+			// loop through each triangle of the object and check it for an intersection with the ray
 			for (unsigned int j = 0; j < m_objects[i].tris.size(); ++j)
 			{
+				// get the intersect
 				Intersect intersect = m_objects[i].tris[j].intersect(Ray(_ray.origin, _ray.direction), _limits);
+				++m_statistics.numIntersectionTests;
 
 				if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < closestIntersect)
 				{
@@ -83,8 +118,6 @@ namespace Batoidea
 				}
 			}
 		}
-
-
 
 		_renderable = closestRenderable;
 		_closestIntersection = closestIntersect;
@@ -134,58 +167,23 @@ namespace Batoidea
 
 	void RayTracer::renderQuadToPixels(const glm::vec2 _start, const glm::vec2 _finish)
 	{
+		// loop through the quad
 		for (int y = (int)_start.y; y < (int)_finish.y; ++y)
 		{
 			for (int x = (int)_start.x; x < (int)_finish.x; ++x)
 			{
-				Ray cameraRay = m_camera->getRay(x, y);
-				glm::vec3 pixelColour = trace(cameraRay, m_settings.reflectionRecursionDepth, Intersect(0.0f, 100.0f, glm::vec3(0)));
-				pixelColour *= 255;
+				glm::vec3 pixelColour;
 				
-				// lock  m_pixels when writing, this is not strictly required as all threads should be writing to different parts of the pixel pointer
+				for (int i = 0; i < m_settings.samplesPerPixel; ++i)
 				{
-					std::lock_guard<std::mutex> pixelLock(m_pixelMutex);
-					m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
+					Ray cameraRay = m_camera->getRay((float)x + RAND_FLOAT, (float)y + RAND_FLOAT);
+					pixelColour += trace(cameraRay, m_settings.reflectionRecursionDepth, Intersect(0.0f, 100.0f, glm::vec3(0)));
 				}
-
+				pixelColour /= 3.0f;
+				pixelColour *= 255;
+				m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
 			}
 		}
-	}
-
-	glm::vec3 RayTracer::trace(const Ray &_ray, int _depth, Intersect _limits)
-	{
-		float closestIntersect = INFINITY;
-		std::shared_ptr<Object> closestRenderable;
-		glm::vec3 normal;
-		calculateClosestIntersection(closestRenderable, closestIntersect, normal, _ray, _limits);
-		normal = glm::normalize(normal);
-
-		// the background colour
-		glm::vec3 localColour = m_settings.backgroundColour;
-
-		if (closestRenderable == nullptr)
-		{
-			return localColour;
-		}
-
-		glm::vec3 position = _ray.point_at(closestIntersect);
-
-		localColour = closestRenderable->getMaterial().colourDiffuse;
-		localColour *= computeLighting(closestRenderable, normal, position, -_ray.direction);
-
-		float reflectivity = closestRenderable->getMaterial().reflectiveness;
-		// handle reflection
-		if (_depth <= 0 || reflectivity <= 0.0f)
-		{
-			return localColour;
-		}
-
-		glm::vec3 reflection = reflect(-_ray.direction, normal);
-		glm::vec3 reflectedColour = trace(Ray(position, reflection), _depth - 1, Intersect(0.1f, INFINITY, glm::vec3(0)));
-
-		localColour = localColour * (1 - reflectivity) + reflectedColour * reflectivity;
-
-		return localColour;
 	}
 
 	float RayTracer::computeLighting(std::shared_ptr<Object> _renderable, glm::vec3 _normal, glm::vec3 _position, glm::vec3 _rayToCamera)
@@ -217,7 +215,9 @@ namespace Batoidea
 			std::shared_ptr<Object> closestShadowRenderable;
 			glm::vec3 norm;
 			
+
 			calculateClosestIntersection(closestShadowRenderable, closestShadowIntersect, norm, Ray(_position, L), Intersect(0.001f, INFINITY, norm));
+			++m_statistics.numShadowRays;
 			if (closestShadowRenderable != NULL)
 				continue;
 			
@@ -242,5 +242,15 @@ namespace Batoidea
 		}
 		intensity = glm::clamp(intensity, 0.0f, 1.0f);
 		return intensity;
+	}
+
+	bool RayTracer::isRenderComplete()
+	{
+		if (m_threadPool->isTasksEmpty())
+		{
+			m_timer.saveDuration();
+			return true;
+		}
+		return false;
 	}
 }

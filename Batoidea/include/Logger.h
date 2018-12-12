@@ -12,3 +12,5 @@
 
 #define SCREEN_WIDTH 1280	
 #define SCREEN_HEIGHT 720
+
+#define RAND_FLOAT static_cast <float> (rand()) / static_cast <float> (RAND_MAX)

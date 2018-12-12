@@ -197,6 +197,7 @@
     <ClInclude Include="include\Renderable.h" />
     <ClInclude Include="include\RenderQuad.h" />
     <ClInclude Include="include\Sphere.h" />
+    <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\Triangle.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="include\ThreadPool.h" />

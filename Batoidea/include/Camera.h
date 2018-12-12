@@ -17,7 +17,7 @@ namespace Batoidea
 	public:
 		Camera(const int _viewportResolutionWidth, const int _viewportResolutionHeight, glm::vec3 _position);
 
-		Ray getRay(const int _x, const int _y);
+		Ray getRay(const float _x, const float _y);
 
 	protected:
 		int m_viewportResolutionWidth;

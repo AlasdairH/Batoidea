@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Object.h"
+#include "Statistics.h"
 
 namespace Batoidea
 {
@@ -57,6 +58,13 @@ namespace Batoidea
 		*	Checks for an active render, if there is one then stop it
 		*/
 		inline void stopCurrentRender() { m_threadPool->cancelQueue(); }
+
+		/** @brief Returns the current or last render statistics
+		*	@return The current statistics for the render
+		*
+		*	Returns the render statistics. This might not be complete if a render is not finished.
+		*/
+		inline Statistics getRenderStatistics() { return m_statistics; }
 
 	protected:
 		// TODO: Doxygen
@@ -105,18 +113,17 @@ namespace Batoidea
 			return 2.0f * _normal * glm::dot(_normal, _rayDir) - _rayDir;
 		}
 
-		Timer										m_timer;		/**< A timer for timing ray tracing operations */
+		Timer										m_timer;			/**< A timer for timing ray tracing operations */
 
-		std::shared_ptr<Threads::ThreadPool>		m_threadPool;	/**< The thread pool used to render the scene */
+		std::shared_ptr<Threads::ThreadPool>		m_threadPool;		/**< The thread pool used to render the scene */
 
-		std::shared_ptr<Camera>						m_camera;		/**< The scene camera */
+		std::shared_ptr<Camera>						m_camera;			/**< The scene camera */
+		std::vector<Object>							m_objects;			/**< Vector of objects in the scene */
+		std::vector<Light>							m_lights;			/**< Vector of lights in the scene */
 
-		RayTracerSettings							m_settings;		/**< The ray tracer settings */
+		Uint32										*m_pixels;			/**< Pointer to the pixels of the surface */
 
-		std::vector<Object>							m_objects;		/**< Vector of objects in the scene */
-		std::vector<Light>							m_lights;		/**< Vector of lights in the scene */
-
-		std::mutex									m_pixelMutex;
-		Uint32										*m_pixels;		/**< Pointer to the pixels of the surface */
+		RayTracerSettings							m_settings;			/**< The ray tracer settings */
+		Statistics									m_statistics;		/**< The stats for the last render */
 	};
 }
