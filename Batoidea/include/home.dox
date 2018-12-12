@@ -5,7 +5,7 @@
 Welcome to the documentation of Batoidea, a ray tracer written in C++ for the Games Programming Level 6 Graphics and Computational Programming
 assignment.
 
-\image html MainPageRender.bmp
+\image html render1.bmp
 
 \section sec_features Features
 

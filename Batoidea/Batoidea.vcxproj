@@ -203,6 +203,9 @@
     <ClInclude Include="include\ThreadPool.h" />
     <ClInclude Include="include\Timer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="include\home.dox" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
