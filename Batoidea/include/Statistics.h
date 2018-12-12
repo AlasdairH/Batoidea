@@ -11,11 +11,16 @@ namespace Batoidea
 {
 	struct Statistics
 	{
-		int numTriangles			= 0;
-		int	numIntersectionTests	= 0;
-		int numIntersections		= 0;
-		int numShadowRays			= 0;
+		/** @brief Statistics Constructor
+		*
+		*	Creates and resets a set of stats
+		*/
+		Statistics() { reset(); }
 
+		/** @brief Resets the stats to 0
+		*
+		*	Resets all stats to their default values
+		*/
 		void reset()
 		{
 			numTriangles = 0;
@@ -23,6 +28,10 @@ namespace Batoidea
 			numIntersections = 0;
 		}
 
+		/** @brief Prints out the stats to the console
+		*
+		*	Prints out the stats to the console
+		*/
 		void print()
 		{
 			LOG_MESSAGE("Number of Triangles: " << numTriangles);
@@ -30,5 +39,10 @@ namespace Batoidea
 			LOG_MESSAGE("Number of Intersections: " << numIntersections);
 			LOG_MESSAGE("Shadow Rays Cast: " << numShadowRays);
 		}
+
+		int numTriangles;			/**< The number of triangles in the scene */
+		int	numIntersectionTests;	/**< The number of intersection tests performed */
+		int numIntersections;		/**< The number of intersections that tested true */
+		int numShadowRays;			/**< The number of shadow rays caculated */
 	};
 }

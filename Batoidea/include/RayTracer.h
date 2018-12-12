@@ -8,7 +8,6 @@
 #include "PCH.h"
 #include "Logger.h"
 #include "RenderQuad.h"
-#include "Sphere.h"
 #include "RayTracerSettings.h"
 #include "Ray.h"
 #include "Timer.h"

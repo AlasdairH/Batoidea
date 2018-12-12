@@ -10,7 +10,6 @@
 // program
 #include "Logger.h"
 #include "Window.h"
-#include "Sphere.h"
 #include "ThreadPool.h"
 #include "Timer.h"
 #include "RayTracer.h"

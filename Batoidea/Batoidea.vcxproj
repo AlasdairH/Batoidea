@@ -176,7 +176,6 @@
     </ClCompile>
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\RayTracer.cpp" />
-    <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\ThreadPool.cpp" />
@@ -194,9 +193,7 @@
     <ClInclude Include="include\Ray.h" />
     <ClInclude Include="include\RayTracer.h" />
     <ClInclude Include="include\RayTracerSettings.h" />
-    <ClInclude Include="include\Renderable.h" />
     <ClInclude Include="include\RenderQuad.h" />
-    <ClInclude Include="include\Sphere.h" />
     <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\Triangle.h" />
     <ClInclude Include="include\Window.h" />

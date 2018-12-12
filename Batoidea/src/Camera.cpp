@@ -8,20 +8,9 @@ namespace Batoidea
 		m_viewportResolutionWidth = _viewportResolutionWidth;
 		m_viewportResolutionHeight = _viewportResolutionHeight;
 
-		m_lookAt = glm::vec3(0, 0, 0);
-		m_viewDirection = m_lookAt - m_position;
-
-		m_U = m_viewDirection * glm::vec3(0, 1, 0);
-		m_V = m_U * m_viewDirection;
-
-		m_U = glm::normalize(m_U);
-		m_V = glm::normalize(m_V);
-
 		m_fieldOfView = glm::radians(50.0f);
 		m_aspectRatio = (float)m_viewportResolutionWidth / (float)m_viewportResolutionHeight;
 		m_halfFieldOfView = m_fieldOfView / 2.0f;
-
-		m_cameraToWorld = glm::perspective(glm::radians(m_fieldOfView), m_aspectRatio, 0.1f, 100.0f);
 	}
 
 	Ray Camera::getRay(const float _x, const float _y)

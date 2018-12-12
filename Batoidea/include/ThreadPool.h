@@ -106,6 +106,10 @@ namespace Threads
 			}
 		}
 
+		/** @brief Cancels all jobs in the current queue
+		*
+		*	Clears the queue of jobs. Any currently running jobs will finish.
+		*/
 		void cancelQueue();
 
 

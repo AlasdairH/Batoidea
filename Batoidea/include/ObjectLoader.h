@@ -13,14 +13,39 @@
 
 namespace Batoidea
 {
+	/*! @class ObjectLoader
+	*	@brief Loads objects from a .obj file
+	*
+	*	loads objects from a .obj file into a format renderable by the ray tracer.
+	*/
 	class ObjectLoader
 	{
 	public:
-		static Object loadObject(const std::string & _filepath);
+		/** @brief Loads an object from a .obj file
+		*	@param _filepath The path to the file to load
+		*	@return The object loaded from file.
+		*
+		*	Loads an object from a .obj file. This code is a modification of the CookieEngine object
+		*	loader, changed to load directly to triangles.
+		*/
+		static Object loadObject(const std::string &_filepath);
 
 	protected:
+		/** @brief Loads text from a file to a string
+		*	@param _filepath The path to the file to load
+		*	@return A string containing the text from the file
+		*
+		*	Loads a text based file (.txt / .obj / etc) to a string
+		*/
 		static std::string loadTextFile(std::string _filepath);
 
+		/** @brief Splits a string based on a delimiter
+		*	@param _s The string to split
+		*	@param _delimiter The delimiter to split the string around
+		*	@return A vector of strings, split by the delimiter
+		*
+		*	Splits a string around a delimiter. Used in parsing files.
+		*/
 		static std::vector<std::string> split(const std::string &_s, char _delimiter)
 		{
 			std::vector<std::string> tokens;
