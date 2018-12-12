@@ -176,10 +176,19 @@ namespace Batoidea
 				
 				for (int i = 0; i < m_settings.samplesPerPixel; ++i)
 				{
-					Ray cameraRay = m_camera->getRay((float)x + RAND_FLOAT, (float)y + RAND_FLOAT);
+					float sampleVarianceX = 0;
+					float sampleVarianceY = 0;
+					if (m_settings.samplesPerPixel > 1)
+					{
+						sampleVarianceX = RAND_FLOAT;
+						sampleVarianceY = RAND_FLOAT;
+					}
+
+					Ray cameraRay = m_camera->getRay((float)x + sampleVarianceX, (float)y + sampleVarianceY);
 					pixelColour += trace(cameraRay, m_settings.reflectionRecursionDepth, Intersect(0.0f, 100.0f, glm::vec3(0)));
 				}
-				pixelColour /= 3.0f;
+
+				pixelColour /= (float)m_settings.samplesPerPixel;
 				pixelColour *= 255;
 				m_pixels[x + m_settings.renderResolutionWidth * y] = ((int)pixelColour.r << 16) | ((int)pixelColour.g << 8) | (int)pixelColour.b;
 			}

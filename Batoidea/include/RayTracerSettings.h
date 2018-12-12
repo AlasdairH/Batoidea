@@ -28,7 +28,7 @@ namespace Batoidea
 		float fov = 30.0f;												/**< The field of view of the camera */
 
 		int reflectionRecursionDepth = 3;								/**< How many reflection recursions to complete (seeing reflections in reflections) */
-		int samplesPerPixel = 3;										/**< The number of samples to take per pixel. This will anti-alias the final render a the cost of N * longer renders. */
+		int samplesPerPixel = 1;										/**< The number of samples to take per pixel. This will anti-alias the final render a the cost of N * longer renders. */
 
 		glm::vec3 backgroundColour = glm::vec3(0.1f, 0.1f, 0.1f);		/**< The colour to render when no object is intersected */
 
