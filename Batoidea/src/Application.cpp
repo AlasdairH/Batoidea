@@ -59,25 +59,28 @@ int main()
 	Material materialWhite;
 	materialWhite.shine = 1000.0f;
 	materialWhite.diffuse->setColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	materialWhite.reflectiveness = 0.5f;		
+	materialWhite.reflectiveness = 0.8f;		
 	
 	Material materialMK2;
 	materialMK2.shine = 500.0f;
 	materialMK2.diffuse->load("resources/textures/MK2/base.png");
-	materialMK2.reflectiveness = 0.1f;
+	materialMK2.reflectiveness = 0.1f;	
 
 	Object object1 = ObjectLoader::loadObject("resources/models/mk2.obj");
 	Object object2 = ObjectLoader::loadObject("resources/models/mk2-1.obj");
+	Object object3 = ObjectLoader::loadObject("resources/model/sphere.obj");
 	Object groundPlane = ObjectLoader::loadObject("resources/models/plane.obj");
 	
 	object1.setMaterial(materialMK2);
 	object2.setMaterial(materialMK2);
+	object3.setMaterial(materialMK2);
 	groundPlane.setMaterial(materialWhite);
 
 	std::vector<Object> renderables;
 	renderables.push_back(object1);
 	renderables.push_back(object2);
-	renderables.push_back(groundPlane);
+	renderables.push_back(object3);
+	//renderables.push_back(groundPlane);
 
 
 	std::vector<Light> lights;
