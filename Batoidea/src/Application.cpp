@@ -14,7 +14,7 @@
 #include "ThreadPool.h"
 #include "Timer.h"
 #include "RayTracer.h"
-#include "ObjectLoader.h"
+#include "FileLoader.h"
 #include "Object.h"
 
 #undef main
@@ -61,11 +61,7 @@ int main()
 	std::unique_ptr<Window> window = std::make_unique<Window>("Batoidea Raytracer", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// set up the settings for rendering
-	RayTracerSettings rtSettings;
-	rtSettings.threads = 8;
-	rtSettings.reflectionRecursionDepth = 3;
-	rtSettings.samplesPerPixel = 1;
-
+	RayTracerSettings rtSettings = FileLoader::loadSettings("settings.ini");
 	// create the ray tracer with the given settings
 	RayTracer raytracer(rtSettings);
 
@@ -79,8 +75,8 @@ int main()
 	materialMK2.diffuse->load("resources/textures/MK2/base.png");
 	materialMK2.reflectiveness = 0.0f;	
 
-	Object object1 = ObjectLoader::loadObject("resources/models/mk2.obj");
-	Object groundPlane = ObjectLoader::loadObject("resources/models/plane.obj");
+	Object object1 = FileLoader::loadObject("resources/models/mk2.obj");
+	Object groundPlane = FileLoader::loadObject("resources/models/plane.obj");
 	
 	object1.setMaterial(materialMK2);
 	groundPlane.setMaterial(materialFloor);
@@ -157,6 +153,11 @@ int main()
 					{
 						LOG_ERROR("Unable to save, render in progress");
 					}
+					break;	
+
+				case SDLK_r:
+					LOG_MESSAGE("Reloading Settings");
+					raytracer.setSettings(FileLoader::loadSettings("settings.ini"));
 					break;				
 				
 				case SDLK_ESCAPE:

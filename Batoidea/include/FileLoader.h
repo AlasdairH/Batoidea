@@ -10,15 +10,16 @@
 #include "PCH.h"
 #include "Triangle.h"
 #include "Object.h"
+#include "RayTracerSettings.h"
 
 namespace Batoidea
 {
 	/*! @class ObjectLoader
-	*	@brief Loads objects from a .obj file
+	*	@brief Loads vaious file types
 	*
-	*	loads objects from a .obj file into a format renderable by the ray tracer.
+	*	Loads files such as .obj and .ini
 	*/
-	class ObjectLoader
+	class FileLoader
 	{
 	public:
 		/** @brief Loads an object from a .obj file
@@ -28,7 +29,15 @@ namespace Batoidea
 		*	Loads an object from a .obj file. This code is a modification of the CookieEngine object
 		*	loader, changed to load directly to triangles.
 		*/
-		static Object loadObject(const std::string &_filepath);
+		static Object loadObject(const std::string &_filepath);		
+		
+		/** @brief Loads settings from a .ini file
+		*	@param _filepath The path to the file to load
+		*	@return The loaded settings
+		*
+		*	Loads settings from a .ini file.
+		*/
+		static RayTracerSettings loadSettings(const std::string &_filepath);
 
 	protected:
 		/** @brief Loads text from a file to a string

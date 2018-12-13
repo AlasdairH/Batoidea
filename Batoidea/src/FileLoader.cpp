@@ -1,8 +1,9 @@
-#include "ObjectLoader.h"
+#include "FileLoader.h"
+#include "..\include\FileLoader.h"
 
 namespace Batoidea
 {
-	Object ObjectLoader::loadObject(const std::string & _filepath)
+	Object FileLoader::loadObject(const std::string & _filepath)
 	{
 		Object object;
 		std::vector<Triangle> tris;
@@ -13,7 +14,7 @@ namespace Batoidea
 		BoundingBox boundingBox;
 
 		int parsedLines = 0;
-		std::string objFile = ObjectLoader::loadTextFile(_filepath);
+		std::string objFile = FileLoader::loadTextFile(_filepath);
 
 		unsigned int cursor = 0;
 
@@ -99,7 +100,7 @@ namespace Batoidea
 			if (line.find("f ") != std::string::npos)
 			{
 				// split the face line
-				std::vector<std::string> splitLine = ObjectLoader::split(line, ' ');
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
 				// remove the "f"
 				splitLine.erase(splitLine.begin());
 
@@ -111,7 +112,7 @@ namespace Batoidea
 				for (unsigned int j = 0; j < splitLine.size(); ++j)
 				{
 					// split the face components by the slash delimiter
-					std::vector<std::string> splitBlock = ObjectLoader::split(splitLine[j], '/');
+					std::vector<std::string> splitBlock = FileLoader::split(splitLine[j], '/');
 					// get the vertex index
 					vIncides.push_back(std::stoi(splitBlock[0]));
 					// get the vertex texture index
@@ -144,7 +145,81 @@ namespace Batoidea
 		return object;
 	}
 
-	std::string ObjectLoader::loadTextFile(std::string _filepath)
+	RayTracerSettings FileLoader::loadSettings(const std::string & _filepath)
+	{
+		RayTracerSettings settings;
+		std::string objFile = FileLoader::loadTextFile(_filepath);
+
+		unsigned int cursor = 0;
+
+		for (unsigned int i = 0; i < objFile.size(); ++i)
+		{
+			// find the index of the next end of line char, starting from i
+			unsigned int eol = objFile.find("\n", i);
+			// get a substring from i, for end of line - i chars
+			std::string line = objFile.substr(i, eol - i);
+
+			if (line.find("renderResolutionWidth") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.renderResolutionWidth = std::stoi(splitLine[1]);
+			}
+			else if (line.find("renderResolutionHeight") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.renderResolutionHeight = std::stoi(splitLine[1]);
+			}
+			else if (line.find("threads") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				if (splitLine[1] == "all")
+				{
+					settings.threads = std::thread::hardware_concurrency();
+				}
+				else
+				{
+					settings.threads = std::stoi(splitLine[1]);
+				}
+			}
+			else if (line.find("renderQuadResolutionWidth") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.renderQuadResolutionWidth = std::stoi(splitLine[1]);
+			}
+			else if (line.find("renderQuadResolutionHeight") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.renderQuadResolutionHeight = std::stoi(splitLine[1]);
+			}
+			else if (line.find("reflectionRecursionDepth") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.reflectionRecursionDepth = std::stoi(splitLine[1]);
+			}
+			else if (line.find("samplesPerPixel") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.samplesPerPixel = std::stoi(splitLine[1]);
+			}
+			else if (line.find("renderShadows") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.renderShadows = std::stoi(splitLine[1]);
+			}
+			else if (line.find("backgroundColour") != std::string::npos)
+			{
+				std::vector<std::string> splitLine = FileLoader::split(line, ' ');
+				settings.backgroundColour.r = std::stof(splitLine[1]);
+				settings.backgroundColour.g = std::stof(splitLine[2]);
+				settings.backgroundColour.b = std::stof(splitLine[3]);
+			}
+
+			i = eol;
+		}
+		return settings;
+	}
+
+	std::string FileLoader::loadTextFile(std::string _filepath)
 	{
 		std::ifstream inFile;
 		//open the input file

@@ -57,6 +57,12 @@ namespace Batoidea
 		*	Checks for an active render, if there is one then stop it
 		*/
 		inline void stopCurrentRender() { m_threadPool->cancelQueue(); }
+		/** @brief Set the settings to use when rendering
+		*	@param _settings The settings to use
+		*
+		*	Loads settings from the argument to use in rendering
+		*/
+		inline void setSettings(const RayTracerSettings _settings) { m_settings = _settings; }
 
 		/** @brief Returns the current or last render statistics
 		*	@return The current statistics for the render
