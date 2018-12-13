@@ -138,6 +138,7 @@ namespace Batoidea
 
 		Uint32										*m_pixels;			/**< Pointer to the pixels of the surface */
 
+		std::mutex									m_statisticMutex;
 		RayTracerSettings							m_settings;			/**< The ray tracer settings */
 		Statistics									m_statistics;		/**< The stats for the last render */
 	};

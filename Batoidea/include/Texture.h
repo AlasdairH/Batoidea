@@ -34,6 +34,7 @@ namespace Batoidea
 		*	Loads an image to the texture. Supports PNG.
 		*/
 		void load(std::string _filepath);
+
 		/** @brief Sets the texture to a block colour
 		*	@param _colour The colour to set
 		*

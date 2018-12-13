@@ -29,6 +29,7 @@ namespace Batoidea
 
 		int reflectionRecursionDepth = 3;								/**< How many reflection recursions to complete (seeing reflections in reflections) */
 		int samplesPerPixel = 1;										/**< The number of samples to take per pixel. This will anti-alias the final render a the cost of N * longer renders. */
+		bool renderShadows = true;										/**< True / False flag for whether to render shadows */
 
 		glm::vec3 backgroundColour = glm::vec3(0.1f, 0.1f, 0.1f);		/**< The colour to render when no object is intersected */
 

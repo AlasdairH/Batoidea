@@ -25,6 +25,12 @@ namespace Batoidea
 		m_lights = _lights;
 		m_pixels = (Uint32*)_surface.pixels;
 		
+		// count number of triangles in scene
+		for (unsigned int i = 0; i < m_objects.size(); ++i)
+		{
+			m_statistics.numTriangles += (int)m_objects[i].tris.size();
+		}
+
 		LOG_MESSAGE("Beginning Raytrace");
 
 		m_timer.reset();
@@ -96,6 +102,7 @@ namespace Batoidea
 		{
 			// test for a bounding intersection before testing all triangles of a mesh
 			++m_statistics.numIntersectionTests;
+
 			if (!m_objects[i].boundIntersection(_ray))
 			{
 				continue;
@@ -106,7 +113,9 @@ namespace Batoidea
 			{
 				// get the intersect
 				Intersect intersect = m_objects[i].tris[j].intersect(Ray(_ray.origin, _ray.direction), _limits);
+
 				++m_statistics.numIntersectionTests;
+
 
 				if (intersect.t1 > _limits.t1 && intersect.t1 < _limits.t2 && intersect.t1 < rtnIntersect.t1)
 				{
@@ -229,15 +238,16 @@ namespace Batoidea
 			L = glm::normalize(L);
 			
 			// shadow check
-			std::shared_ptr<Object> closestShadowRenderable;
-			glm::vec3 norm;
-			
+			if (m_settings.renderShadows)
+			{
+				std::shared_ptr<Object> closestShadowRenderable;
+				Intersect shadowIntersect = calculateClosestIntersection(closestShadowRenderable, Ray(_position, L), Intersect(0.001f, INFINITY));
+				++m_statistics.numShadowRays;
 
-			Intersect shadowIntersect = calculateClosestIntersection(closestShadowRenderable, Ray(_position, L), Intersect(0.001f, INFINITY));
-			++m_statistics.numShadowRays;
-			if (closestShadowRenderable != NULL)
-				continue;
-			
+				
+				if (closestShadowRenderable != NULL)
+					continue;
+			}
 
 			// diffuse
 			float n_dot_l = glm::dot(_normal, L);

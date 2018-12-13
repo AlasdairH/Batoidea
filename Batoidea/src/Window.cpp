@@ -7,7 +7,7 @@ namespace Batoidea
 		m_window = SDL_CreateWindow(_title.c_str(),
 			50, 50,
 			_width, _height,
-			SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+			SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
 
 		m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
