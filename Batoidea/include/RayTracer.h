@@ -74,8 +74,6 @@ namespace Batoidea
 	protected:
 		/** @brief Returns the closest intersection for a given ray
 		*	@param _renderable The closest renderable object
-		*	@param _closestIntersection The distance of the closest intersection
-		*	@param _normal The normal at the intersection
 		*	@param _ray The ray to cast to find any intersections
 		*	@param _limits The limits to find any intersection inbetween
 		*	@return The calculated intersection
@@ -144,7 +142,6 @@ namespace Batoidea
 
 		Uint32										*m_pixels;			/**< Pointer to the pixels of the surface */
 
-		std::mutex									m_statisticMutex;
 		RayTracerSettings							m_settings;			/**< The ray tracer settings */
 		Statistics									m_statistics;		/**< The stats for the last render */
 	};

@@ -14,7 +14,7 @@
 
 namespace Batoidea
 {
-	/*! @class ObjectLoader
+	/*! @class FileLoader
 	*	@brief Loads vaious file types
 	*
 	*	Loads files such as .obj and .ini

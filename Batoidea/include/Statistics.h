@@ -37,6 +37,10 @@ namespace Batoidea
 		*/
 		void print();
 
+		/** @brief Outputs the statistics to a CSV file
+		*
+		*	Writes the statistics to a SCSV file
+		*/
 		void outputToCSV();
 
 	protected:

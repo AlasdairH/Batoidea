@@ -5,5 +5,6 @@ var searchData=
   ['renderquadresolutionheight',['renderQuadResolutionHeight',['../struct_batoidea_1_1_ray_tracer_settings.html#a0b16d2a90e4aa54d71edf25a2be89977',1,'Batoidea::RayTracerSettings']]],
   ['renderquadresolutionwidth',['renderQuadResolutionWidth',['../struct_batoidea_1_1_ray_tracer_settings.html#a32ce614a5d1554deb5ad7d7996975476',1,'Batoidea::RayTracerSettings']]],
   ['renderresolutionheight',['renderResolutionHeight',['../struct_batoidea_1_1_ray_tracer_settings.html#a9639e40ae5f9c7ddd59e2d6938999ab5',1,'Batoidea::RayTracerSettings']]],
-  ['renderresolutionwidth',['renderResolutionWidth',['../struct_batoidea_1_1_ray_tracer_settings.html#a770fc4d133a0f372f46837dd0681b151',1,'Batoidea::RayTracerSettings']]]
+  ['renderresolutionwidth',['renderResolutionWidth',['../struct_batoidea_1_1_ray_tracer_settings.html#a770fc4d133a0f372f46837dd0681b151',1,'Batoidea::RayTracerSettings']]],
+  ['rendershadows',['renderShadows',['../struct_batoidea_1_1_ray_tracer_settings.html#a9293274b3aabb79320b2fbf8a3622d9b',1,'Batoidea::RayTracerSettings']]]
 ];

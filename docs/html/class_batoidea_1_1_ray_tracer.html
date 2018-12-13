@@ -92,6 +92,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c000bb550a0e0595a402210e6a81c49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_batoidea_1_1_ray_tracer.html#a0c000bb550a0e0595a402210e6a81c49">stopCurrentRender</a> ()</td></tr>
 <tr class="memdesc:a0c000bb550a0e0595a402210e6a81c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops any active render.  <a href="#a0c000bb550a0e0595a402210e6a81c49">More...</a><br /></td></tr>
 <tr class="separator:a0c000bb550a0e0595a402210e6a81c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a232bd6e6691e13ed3bf42cfda0f31cf0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_batoidea_1_1_ray_tracer.html#a232bd6e6691e13ed3bf42cfda0f31cf0">setSettings</a> (const <a class="el" href="struct_batoidea_1_1_ray_tracer_settings.html">RayTracerSettings</a> _settings)</td></tr>
+<tr class="memdesc:a232bd6e6691e13ed3bf42cfda0f31cf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the settings to use when rendering.  <a href="#a232bd6e6691e13ed3bf42cfda0f31cf0">More...</a><br /></td></tr>
+<tr class="separator:a232bd6e6691e13ed3bf42cfda0f31cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7016c6b7c55ef6358345c73f3e6d7847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_batoidea_1_1_statistics.html">Statistics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_batoidea_1_1_ray_tracer.html#a7016c6b7c55ef6358345c73f3e6d7847">getRenderStatistics</a> ()</td></tr>
 <tr class="memdesc:a7016c6b7c55ef6358345c73f3e6d7847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current or last render statistics.  <a href="#a7016c6b7c55ef6358345c73f3e6d7847">More...</a><br /></td></tr>
 <tr class="separator:a7016c6b7c55ef6358345c73f3e6d7847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,8 +215,6 @@ Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">_renderable</td><td>The closest renderable object </td></tr>
-    <tr><td class="paramname">_closestIntersection</td><td>The distance of the closest intersection </td></tr>
-    <tr><td class="paramname">_normal</td><td>The normal at the intersection </td></tr>
     <tr><td class="paramname">_ray</td><td>The ray to cast to find any intersections </td></tr>
     <tr><td class="paramname">_limits</td><td>The limits to find any intersection inbetween </td></tr>
   </table>
@@ -500,6 +501,41 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 <p><a class="el" href="struct_batoidea_1_1_ray.html" title="A ray in 3D space. ">Ray</a> traces a segment of the image. Could be the entire thing or just a small part of it, typically a <a class="el" href="struct_batoidea_1_1_render_quad.html" title="A simple quad used to define a segment of the render image. ">RenderQuad</a>. </p>
+
+</div>
+</div>
+<a id="a232bd6e6691e13ed3bf42cfda0f31cf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232bd6e6691e13ed3bf42cfda0f31cf0">&#9670;&nbsp;</a></span>setSettings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Batoidea::RayTracer::setSettings </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_batoidea_1_1_ray_tracer_settings.html">RayTracerSettings</a>&#160;</td>
+          <td class="paramname"><em>_settings</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the settings to use when rendering. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_settings</td><td>The settings to use</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Loads settings from the argument to use in rendering </p>
 
 </div>
 </div>
