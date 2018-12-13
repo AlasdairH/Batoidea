@@ -60,11 +60,13 @@ int main()
 
 	std::unique_ptr<Window> window = std::make_unique<Window>("Batoidea Raytracer", SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
+	// set up the settings for rendering
 	RayTracerSettings rtSettings;
 	rtSettings.threads = 8;
 	rtSettings.reflectionRecursionDepth = 3;
 	rtSettings.samplesPerPixel = 1;
+
+	// create the ray tracer with the given settings
 	RayTracer raytracer(rtSettings);
 
 	Material materialFloor;
